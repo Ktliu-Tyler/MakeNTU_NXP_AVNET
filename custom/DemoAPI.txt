@@ -1,0 +1,43 @@
+#include "fsl_lpuart.h"
+#include "AvnetTypedef.h"
+#include "Monitor.h"
+
+
+void InitUartConnect()
+{
+    lpuart_config_t config;
+
+    LPUART_GetDefaultConfig(&config);
+    config.baudRate_Bps = BOARD_DEBUG_UART_BAUDRATE;
+    config.enableTx     = true;
+    config.enableRx     = true;
+    LPUART_Init(DEMO_LPUART, &config, DEMO_LPUART_CLK_FREQ);
+    MonitorInit();
+
+    /* Enable RX interrupt. */
+    LPUART_EnableInterrupts(DEMO_LPUART, kLPUART_RxDataRegFullInterruptEnable);
+    EnableIRQ(DEMO_LPUART_IRQn);
+}
+
+void ButtonGui(char* pValue)
+{
+    ui_load_scr_animation(&guider_ui, &guider_ui.screen_2, guider_ui.screen_2_del, &guider_ui.screen1_del, setup_scr_screen_2, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+}
+void ReturnGui(char* pValue)
+{
+    ui_load_scr_animation(&guider_ui, &guider_ui.screen1, guider_ui.screen1_del, &guider_ui.screen_2_del, setup_scr_screen1, LV_SCR_LOAD_ANIM_NONE, 200, 200, false, true);
+}
+void ShowNumber(char* pValue)
+{
+	unsigned int value=0;
+	sscanf(pValue,"%d",&value);
+	PRINTF("Number = %d\r\n" , value);
+
+}
+SMONITORCOMMAND sMonitorFuncList[]=
+{
+	{  "Button",    "<var 1> <var 2>",     "Print the input numbers",      ButtonGui },
+	{  "Return",    "<var 1> <var 2>",     "Print the input numbers",      ReturnGui },
+	{  "ShowNum",    "<var 1> <var 2>",     "Print the input numbers",     ShowNumber },
+	{0,0,0,0}
+};

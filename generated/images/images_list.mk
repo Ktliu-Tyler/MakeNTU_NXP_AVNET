@@ -1,0 +1,1 @@
+GEN_CSRCS += _NXP_alpha_135x65.c _AVNET_alpha_258x74.c
