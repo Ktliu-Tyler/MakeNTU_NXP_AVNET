@@ -39,12 +39,12 @@ static void Normal_event_handler (lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     switch (code) {
-    case LV_EVENT_FOCUSED:
+    case LV_EVENT_SCREEN_LOADED:
     {
-        ui_animation(guider_ui.Normal_eyeL, 100, 2000, lv_obj_get_y(guider_ui.Normal_eyeL), 150, &lv_anim_path_linear, 30, 3000, 100, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
-        ui_animation(guider_ui.Normal_eyeL, 100, 2000, lv_obj_get_height(guider_ui.Normal_eyeL), 10, &lv_anim_path_linear, 30, 3000, 100, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
-        ui_animation(guider_ui.Normal_eyeR, 100, 2000, lv_obj_get_y(guider_ui.Normal_eyeR), 150, &lv_anim_path_linear, 30, 3000, 100, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
-        ui_animation(guider_ui.Normal_eyeR, 100, 2000, lv_obj_get_height(guider_ui.Normal_eyeR), 10, &lv_anim_path_linear, 30, 3000, 100, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
+        ui_animation(guider_ui.Normal_eyeL, 100, 0, lv_obj_get_y(guider_ui.Normal_eyeL), 150, &lv_anim_path_linear, 40, 3000, 100, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+        ui_animation(guider_ui.Normal_eyeL, 100, 0, lv_obj_get_height(guider_ui.Normal_eyeL), 10, &lv_anim_path_linear, 40, 3000, 100, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
+        ui_animation(guider_ui.Normal_eyeR, 100, 0, lv_obj_get_y(guider_ui.Normal_eyeR), 150, &lv_anim_path_linear, 30, 3000, 100, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+        ui_animation(guider_ui.Normal_eyeR, 100, 0, lv_obj_get_height(guider_ui.Normal_eyeR), 10, &lv_anim_path_linear, 30, 3000, 100, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
         break;
     }
     case LV_EVENT_GESTURE:
@@ -54,7 +54,19 @@ static void Normal_event_handler (lv_event_t *e)
         case LV_DIR_BOTTOM:
         {
             lv_indev_wait_release(lv_indev_get_act());
-            ui_load_scr_animation(&guider_ui, &guider_ui.Sleep, guider_ui.Sleep_del, &guider_ui.Normal_del, setup_scr_Sleep, LV_SCR_LOAD_ANIM_FADE_ON, 200, 200, true, true);
+            ui_load_scr_animation(&guider_ui, &guider_ui.Sleep, guider_ui.Sleep_del, &guider_ui.Normal_del, setup_scr_Sleep, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, true, true);
+            break;
+        }
+        case LV_DIR_RIGHT:
+        {
+            lv_indev_wait_release(lv_indev_get_act());
+            ui_load_scr_animation(&guider_ui, &guider_ui.Weather, guider_ui.Weather_del, &guider_ui.Normal_del, setup_scr_Weather, LV_SCR_LOAD_ANIM_OVER_RIGHT, 200, 0, true, true);
+            break;
+        }
+        case LV_DIR_LEFT:
+        {
+            lv_indev_wait_release(lv_indev_get_act());
+            ui_load_scr_animation(&guider_ui, &guider_ui.Panel, guider_ui.Panel_del, &guider_ui.Normal_del, setup_scr_Panel, LV_SCR_LOAD_ANIM_OVER_LEFT, 200, 0, true, true);
             break;
         }
         default:
@@ -160,7 +172,7 @@ static void Sleep_event_handler (lv_event_t *e)
         case LV_DIR_TOP:
         {
             lv_indev_wait_release(lv_indev_get_act());
-            ui_load_scr_animation(&guider_ui, &guider_ui.Normal, guider_ui.Normal_del, &guider_ui.Sleep_del, setup_scr_Normal, LV_SCR_LOAD_ANIM_FADE_ON, 200, 200, true, true);
+            ui_load_scr_animation(&guider_ui, &guider_ui.Normal, guider_ui.Normal_del, &guider_ui.Sleep_del, setup_scr_Normal, LV_SCR_LOAD_ANIM_FADE_ON, 200, 0, true, true);
             break;
         }
         default:
@@ -216,6 +228,103 @@ static void Speaking_event_handler (lv_event_t *e)
 void events_init_Speaking (lv_ui *ui)
 {
     lv_obj_add_event_cb(ui->Speaking, Speaking_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void Music_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_SCREEN_LOADED:
+    {
+        ui_animation(guider_ui.Music_line_1, 100, 1000, lv_obj_get_y(guider_ui.Music_line_1), 70, &lv_anim_path_linear, 1000, 1000, 100, 10, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+        ui_animation(guider_ui.Music_eyeR, 60, 5000, lv_obj_get_y(guider_ui.Music_eyeR), 140, &lv_anim_path_linear, 1000, 5000, 60, 200, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+        ui_animation(guider_ui.Music_eyeR, 60, 5000, lv_obj_get_height(guider_ui.Music_eyeR), 10, &lv_anim_path_linear, 1000, 5000, 60, 200, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_Music (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->Music, Music_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void Focus_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_SCREEN_LOADED:
+    {
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_Focus (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->Focus, Focus_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void Weather_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_GESTURE:
+    {
+        lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_get_act());
+        switch(dir) {
+        case LV_DIR_LEFT:
+        {
+            lv_indev_wait_release(lv_indev_get_act());
+            ui_load_scr_animation(&guider_ui, &guider_ui.Normal, guider_ui.Normal_del, &guider_ui.Weather_del, setup_scr_Normal, LV_SCR_LOAD_ANIM_OVER_LEFT, 200, 0, true, true);
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_Weather (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->Weather, Weather_event_handler, LV_EVENT_ALL, ui);
+}
+
+static void Panel_event_handler (lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    switch (code) {
+    case LV_EVENT_GESTURE:
+    {
+        lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_get_act());
+        switch(dir) {
+        case LV_DIR_RIGHT:
+        {
+            lv_indev_wait_release(lv_indev_get_act());
+            ui_load_scr_animation(&guider_ui, &guider_ui.Normal, guider_ui.Normal_del, &guider_ui.Panel_del, setup_scr_Normal, LV_SCR_LOAD_ANIM_OVER_RIGHT, 200, 0, true, true);
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+void events_init_Panel (lv_ui *ui)
+{
+    lv_obj_add_event_cb(ui->Panel, Panel_event_handler, LV_EVENT_ALL, ui);
 }
 
 

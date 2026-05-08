@@ -23,7 +23,8 @@ void clock_count(int *hour, int *min, int *sec);
 #endif
 
 
-void Focus_digital_clock_1_timer(lv_timer_t *timer);
+void Sleep_digital_clock_Sleep_timer(lv_timer_t *timer);
+void Focus_digital_clock_Focus_timer(lv_timer_t *timer);
 
 #ifdef __cplusplus
 }

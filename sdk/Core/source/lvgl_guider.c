@@ -28,6 +28,12 @@
 #include "AvnetTypedef.h"
 #include "Monitor.h"
 #include "servo.h"
+
+#include <stdbool.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
@@ -44,6 +50,11 @@
  ******************************************************************************/
 static volatile bool s_lvgl_initialized = false;
 lv_ui guider_ui;
+
+extern int Focus_digital_clock_Focus_hour_value;
+extern int Focus_digital_clock_Focus_min_value;
+extern int Focus_digital_clock_Focus_sec_value;
+
 /*KT add*/
 struct robotStatus {
     int motorP;
@@ -204,6 +215,75 @@ void InitUartConnect()
     EnableIRQ(DEMO_LPUART_IRQn);
 }
 //my custom code
+
+static bool ParseSpeakingEmotion(const char *pValue, unsigned int *out_value)
+{
+    const char *p = pValue;
+    char *end = NULL;
+    unsigned long parsed = 0;
+
+    if (pValue == NULL || out_value == NULL) {
+        return false;
+    }
+
+    while (*p != '\0' && !isdigit((unsigned char)*p)) {
+        p++;
+    }
+
+    if (*p == '\0') {
+        return false;
+    }
+
+    parsed = strtoul(p, &end, 10);
+    if (end == p) {
+        return false;
+    }
+
+    if (parsed > 5UL) {
+        parsed = 5UL;
+    }
+
+    *out_value = (unsigned int)parsed;
+    return true;
+}
+
+static unsigned int ReadSpeakingEmotionOrNeutral(char *pValue)
+{
+    unsigned int value = 0;
+
+    PRINTF("Speaking raw pValue = [%s]\r\n", pValue ? pValue : "(null)");
+
+    if (!ParseSpeakingEmotion(pValue, &value)) {
+        PRINTF("Speaking emotion parse failed, using neutral\r\n");
+        value = 0;
+    }
+
+    PRINTF("Speaking emotion code = %u\r\n", value);
+    return value;
+}
+
+static void HideSpeakingEmotionDecorations(void)
+{
+    lv_obj_add_flag(guider_ui.Speaking_emoL3, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_emoR3, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_emo4L, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_emo4R, LV_OBJ_FLAG_HIDDEN);
+}
+
+static void ResetFocusClock(void)
+{
+    Focus_digital_clock_Focus_hour_value = 0;
+    Focus_digital_clock_Focus_min_value = 0;
+    Focus_digital_clock_Focus_sec_value = 0;
+
+    if (lv_obj_is_valid(guider_ui.Focus_digital_clock_Focus)) {
+        lv_dclock_set_text_fmt(guider_ui.Focus_digital_clock_Focus, "%d:%02d:%02d",
+                               Focus_digital_clock_Focus_hour_value,
+                               Focus_digital_clock_Focus_min_value,
+                               Focus_digital_clock_Focus_sec_value);
+    }
+}
+
 void SLEEPGui(char* pValue)
 {
     ui_load_scr_animation(&guider_ui, &guider_ui.Sleep, guider_ui.Sleep_del, &guider_ui.Sleep_del, setup_scr_Sleep, LV_SCR_LOAD_ANIM_NONE, 200, 200, true, true);
@@ -229,12 +309,10 @@ void SpeakingGui(char* pValue)
     ui_load_scr_animation(&guider_ui, &guider_ui.Speaking, guider_ui.Speaking_del, &guider_ui.Speaking_del, setup_scr_Speaking, LV_SCR_LOAD_ANIM_NONE, 0, 0, true, true);
     PRINTF("switch to SPEAKING");
     robot.speakstatus = 1;
-    unsigned int value = 0;
-    if (pValue != NULL)
-    {
-        sscanf(pValue, "%u", &value);
-    }
+    unsigned int value = ReadSpeakingEmotionOrNeutral(pValue);
     robot.emotionstatus = value;
+
+    HideSpeakingEmotionDecorations();
 
     typedef struct
     {
@@ -361,6 +439,7 @@ void MusicGui(char* pValue)
 void FocusGui(char* pValue)
 {
     ui_load_scr_animation(&guider_ui, &guider_ui.Focus, guider_ui.Focus_del, &guider_ui.Focus_del, setup_scr_Focus, LV_SCR_LOAD_ANIM_NONE, 0, 0, true, true);
+    ResetFocusClock();
     PRINTF("switch to FOCUS");
     robot.Facestatus = 4;
     robot.speakstatus = 3;
@@ -382,6 +461,44 @@ static bool ParseMotorAngle(const char *pValue, int *out_angle)
     }
 
     return false;
+}
+
+static bool ParseMotorYawPitchAngles(const char *pValue, int *out_yaw, int *out_pitch)
+{
+    const char *p = pValue;
+    char *end = NULL;
+    long values[2] = {0};
+    int count = 0;
+
+    if (pValue == NULL || out_yaw == NULL || out_pitch == NULL) {
+        return false;
+    }
+
+    while (*p != '\0' && count < 2) {
+        while (*p != '\0' && !isdigit((unsigned char)*p) && *p != '-' && *p != '+') {
+            p++;
+        }
+
+        if (*p == '\0') {
+            break;
+        }
+
+        values[count] = strtol(p, &end, 10);
+        if (end == p) {
+            return false;
+        }
+
+        count++;
+        p = end;
+    }
+
+    if (count < 2) {
+        return false;
+    }
+
+    *out_yaw = (int)values[0];
+    *out_pitch = (int)values[1];
+    return true;
 }
 
 void MotorControlPitch(char* pValue)
@@ -422,6 +539,30 @@ void MotorControlYaw(char* pValue)
     Servo_SetYaw(value);
 }
 
+void MotorControlYawPitch(char* pValue)
+{
+    int yaw = 90;
+    int pitch = 90;
+
+    PRINTF("Motor YawPitch raw pValue = [%s]\r\n", pValue ? pValue : "(null)");
+
+    if (!ParseMotorYawPitchAngles(pValue, &yaw, &pitch)) {
+        PRINTF("Motor YawPitch parse failed, use: MotorYawPitch <yaw> <pitch>\r\n");
+        return;
+    }
+
+    if (yaw < 0) yaw = 0;
+    if (yaw > 180) yaw = 180;
+    if (pitch < 65) pitch = 65;
+    if (pitch > 115) pitch = 115;
+
+    robot.motorY = yaw;
+    robot.motorP = pitch;
+    PRINTF("Motor Yaw = %d, Pitch = %d\r\n", yaw, pitch);
+    Servo_SetYaw(yaw);
+    Servo_SetPitch(pitch);
+}
+
 void ShowNumber(char* pValue)
 {
 	unsigned int value=0;
@@ -443,6 +584,7 @@ SMONITORCOMMAND sMonitorFuncList[]=
 	{  "ShowNum",    "<var 1> <var 2>",     "Print the input numbers",     ShowNumber },
 	{  "MotorPitch",    "<var 1> <var 2>",     "control motor P",      MotorControlPitch},
 	{  "MotorYaw",    "<var 1> <var 2>",     "control motor Y",      MotorControlYaw},
+	{  "MotorYawPitch",    "<yaw> <pitch>",     "control motor Y and P",      MotorControlYawPitch},
 	{0,0,0,0}
 };
 

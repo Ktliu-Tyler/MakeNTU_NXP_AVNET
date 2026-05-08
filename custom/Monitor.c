@@ -216,12 +216,11 @@ void UartReciveAndAck(UCHAR ch)
 			m_szReciveBuf[m_u8ReciveCount] = '\0';
 		else
 			m_szReciveBuf[m_u8ReciveCount--] = '\0';		
-		m_u8SpecialSimpleBuf[0] ='\b';
+		m_u8SpecialSimpleBuf[0] = '\b';
 		m_u8SpecialSimpleBuf[1] = ' ';
-		m_u8SpecialSimpleBuf[3] = '\b';
-		m_u8SpecialSimpleBuf[4] = '\b';
+		m_u8SpecialSimpleBuf[2] = '\b';
 		
-		UartSend((char*)m_u8SpecialSimpleBuf,4);
+		UartSend((char*)m_u8SpecialSimpleBuf,3);
 		}
 	else		// Recive Char
 		{

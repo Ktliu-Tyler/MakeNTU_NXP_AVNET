@@ -76,16 +76,30 @@ void clock_count(int *hour, int *min, int *sec)
 #endif
 
 
-extern int Focus_digital_clock_1_hour_value;
-extern int Focus_digital_clock_1_min_value;
-extern int Focus_digital_clock_1_sec_value;
+extern int Sleep_digital_clock_Sleep_hour_value;
+extern int Sleep_digital_clock_Sleep_min_value;
+extern int Sleep_digital_clock_Sleep_sec_value;
+extern char Sleep_digital_clock_Sleep_meridiem[];
 
-void Focus_digital_clock_1_timer(lv_timer_t *timer)
+void Sleep_digital_clock_Sleep_timer(lv_timer_t *timer)
 {
-    clock_count_24(&Focus_digital_clock_1_hour_value, &Focus_digital_clock_1_min_value, &Focus_digital_clock_1_sec_value);
-    if (lv_obj_is_valid(guider_ui.Focus_digital_clock_1))
+    clock_count_12(&Sleep_digital_clock_Sleep_hour_value, &Sleep_digital_clock_Sleep_min_value, &Sleep_digital_clock_Sleep_sec_value, Sleep_digital_clock_Sleep_meridiem);
+    if (lv_obj_is_valid(guider_ui.Sleep_digital_clock_Sleep))
     {
-        lv_dclock_set_text_fmt(guider_ui.Focus_digital_clock_1, "%d:%02d:%02d", Focus_digital_clock_1_hour_value, Focus_digital_clock_1_min_value, Focus_digital_clock_1_sec_value);
+        lv_dclock_set_text_fmt(guider_ui.Sleep_digital_clock_Sleep, "%d:%02d:%02d %s", Sleep_digital_clock_Sleep_hour_value, Sleep_digital_clock_Sleep_min_value, Sleep_digital_clock_Sleep_sec_value, Sleep_digital_clock_Sleep_meridiem);
+    }
+}
+
+extern int Focus_digital_clock_Focus_hour_value;
+extern int Focus_digital_clock_Focus_min_value;
+extern int Focus_digital_clock_Focus_sec_value;
+
+void Focus_digital_clock_Focus_timer(lv_timer_t *timer)
+{
+    clock_count_24(&Focus_digital_clock_Focus_hour_value, &Focus_digital_clock_Focus_min_value, &Focus_digital_clock_Focus_sec_value);
+    if (lv_obj_is_valid(guider_ui.Focus_digital_clock_Focus))
+    {
+        lv_dclock_set_text_fmt(guider_ui.Focus_digital_clock_Focus, "%d:%02d:%02d", Focus_digital_clock_Focus_hour_value, Focus_digital_clock_Focus_min_value, Focus_digital_clock_Focus_sec_value);
     }
 }
 

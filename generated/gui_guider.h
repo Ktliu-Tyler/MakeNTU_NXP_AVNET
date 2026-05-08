@@ -63,6 +63,8 @@ typedef struct
 	lv_obj_t *Sleep_ZZZ1;
 	lv_obj_t *Sleep_btn_1;
 	lv_obj_t *Sleep_btn_1_label;
+	lv_obj_t *Sleep_digital_clock_Sleep;
+	lv_obj_t *Sleep_label_1;
 	lv_obj_t *Speaking;
 	bool Speaking_del;
 	lv_obj_t *Speaking_eyeR;
@@ -111,20 +113,6 @@ typedef struct
 	lv_obj_t *Speaking_emoL3_label;
 	lv_obj_t *Speaking_emoR3;
 	lv_obj_t *Speaking_emoR3_label;
-	lv_obj_t *Speakless;
-	bool Speakless_del;
-	lv_obj_t *Speakless_eyeL;
-	lv_obj_t *Speakless_eyeL_label;
-	lv_obj_t *Speakless_relieve;
-	lv_obj_t *Speakless_relieve_label;
-	lv_obj_t *Speakless_mouth;
-	lv_obj_t *Speakless_mouth_label;
-	lv_obj_t *Speakless_btn_1;
-	lv_obj_t *Speakless_btn_1_label;
-	lv_obj_t *Speakless_btn_3;
-	lv_obj_t *Speakless_btn_3_label;
-	lv_obj_t *Speakless_btn_2;
-	lv_obj_t *Speakless_btn_2_label;
 	lv_obj_t *Music;
 	bool Music_del;
 	lv_obj_t *Music_eyeR;
@@ -136,6 +124,18 @@ typedef struct
 	lv_obj_t *Music_line_2;
 	lv_obj_t *Music_line_1;
 	lv_obj_t *Music_label_1;
+	lv_obj_t *Music_mus3;
+	lv_obj_t *Music_mus3_label;
+	lv_obj_t *Music_mus2;
+	lv_obj_t *Music_mus2_label;
+	lv_obj_t *Music_mus;
+	lv_obj_t *Music_mus_label;
+	lv_obj_t *Music_btn_1;
+	lv_obj_t *Music_btn_1_label;
+	lv_obj_t *Music_btn_2;
+	lv_obj_t *Music_btn_2_label;
+	lv_obj_t *Music_btn_3;
+	lv_obj_t *Music_btn_3_label;
 	lv_obj_t *Focus;
 	bool Focus_del;
 	lv_obj_t *Focus_eyeR;
@@ -148,7 +148,29 @@ typedef struct
 	lv_obj_t *Focus_mouth_label;
 	lv_obj_t *Focus_line_2;
 	lv_obj_t *Focus_line_1;
-	lv_obj_t *Focus_digital_clock_1;
+	lv_obj_t *Focus_digital_clock_Focus;
+	lv_obj_t *Weather;
+	bool Weather_del;
+	lv_obj_t *Weather_label_1;
+	lv_obj_t *Weather_img_0;
+	lv_obj_t *Weather_img_1;
+	lv_obj_t *Weather_img_3;
+	lv_obj_t *Weather_img_45;
+	lv_obj_t *Weather_img_55;
+	lv_obj_t *Weather_img_95;
+	lv_obj_t *Weather_TempBar;
+	lv_obj_t *Weather_RainBar;
+	lv_obj_t *Weather_TempCurrentLabel;
+	lv_obj_t *Weather_TempMaxMinLabel;
+	lv_obj_t *Weather_RainPercentLabel;
+	lv_obj_t *Weather_RoomTH_Label;
+	lv_obj_t *Panel;
+	bool Panel_del;
+	lv_obj_t *Panel_Fan_slide;
+	lv_obj_t *Panel_btn_1;
+	lv_obj_t *Panel_btn_1_label;
+	lv_obj_t *Panel_btn_2;
+	lv_obj_t *Panel_btn_2_label;
 }lv_ui;
 
 typedef void (*ui_setup_scr_t)(lv_ui * ui);
@@ -176,19 +198,24 @@ void setup_scr_Normal(lv_ui *ui);
 void setup_scr_Thinking(lv_ui *ui);
 void setup_scr_Sleep(lv_ui *ui);
 void setup_scr_Speaking(lv_ui *ui);
-void setup_scr_Speakless(lv_ui *ui);
 void setup_scr_Music(lv_ui *ui);
 void setup_scr_Focus(lv_ui *ui);
+void setup_scr_Weather(lv_ui *ui);
+void setup_scr_Panel(lv_ui *ui);
 LV_IMG_DECLARE(_NXP_alpha_135x65);
 LV_IMG_DECLARE(_AVNET_alpha_258x74);
+LV_IMG_DECLARE(_0_alpha_136x124);
+LV_IMG_DECLARE(_1_alpha_163x130);
+LV_IMG_DECLARE(_3_alpha_180x125);
+LV_IMG_DECLARE(_45_alpha_180x125);
+LV_IMG_DECLARE(_55_alpha_171x132);
+LV_IMG_DECLARE(_95_alpha_171x143);
 
 LV_FONT_DECLARE(lv_font_montserratMedium_16)
 LV_FONT_DECLARE(lv_font_montserratMedium_12)
-LV_FONT_DECLARE(lv_font_Alatsi_Regular_30)
-LV_FONT_DECLARE(lv_font_Alatsi_Regular_22)
+LV_FONT_DECLARE(lv_font_Acme_Regular_16)
+LV_FONT_DECLARE(lv_font_Acme_Regular_30)
 LV_FONT_DECLARE(lv_font_Alatsi_Regular_21)
-LV_FONT_DECLARE(lv_font_Amiko_Regular_30)
-LV_FONT_DECLARE(lv_font_Antonio_Regular_25)
 
 
 #ifdef __cplusplus

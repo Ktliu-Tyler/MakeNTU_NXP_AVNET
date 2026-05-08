@@ -1423,6 +1423,11 @@
       <FilePath>..\..\generated\setup_scr_Normal.c</FilePath>
     </File>
     <File>
+      <FileName>setup_scr_Panel.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\setup_scr_Panel.c</FilePath>
+    </File>
+    <File>
       <FileName>setup_scr_Sleep.c</FileName>
       <FileType>1</FileType>
       <FilePath>..\..\generated\setup_scr_Sleep.c</FilePath>
@@ -1433,11 +1438,6 @@
       <FilePath>..\..\generated\setup_scr_Speaking.c</FilePath>
     </File>
     <File>
-      <FileName>setup_scr_Speakless.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\setup_scr_Speakless.c</FilePath>
-    </File>
-    <File>
       <FileName>setup_scr_Start.c</FileName>
       <FileType>1</FileType>
       <FilePath>..\..\generated\setup_scr_Start.c</FilePath>
@@ -1446,6 +1446,11 @@
       <FileName>setup_scr_Thinking.c</FileName>
       <FileType>1</FileType>
       <FilePath>..\..\generated\setup_scr_Thinking.c</FilePath>
+    </File>
+    <File>
+      <FileName>setup_scr_Weather.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\setup_scr_Weather.c</FilePath>
     </File>
     <File>
       <FileName>widgets_init.c</FileName>
@@ -1488,34 +1493,19 @@
       <FilePath>..\..\generated\guider_fonts\guider_fonts.mk</FilePath>
     </File>
     <File>
+      <FileName>lv_font_Acme_Regular_16.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\guider_fonts\lv_font_Acme_Regular_16.c</FilePath>
+    </File>
+    <File>
+      <FileName>lv_font_Acme_Regular_30.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\guider_fonts\lv_font_Acme_Regular_30.c</FilePath>
+    </File>
+    <File>
       <FileName>lv_font_Alatsi_Regular_21.c</FileName>
       <FileType>1</FileType>
       <FilePath>..\..\generated\guider_fonts\lv_font_Alatsi_Regular_21.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Alatsi_Regular_22.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Alatsi_Regular_22.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Alatsi_Regular_30.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Alatsi_Regular_30.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Amiko_Regular_20.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Amiko_Regular_20.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Amiko_Regular_30.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Amiko_Regular_30.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Antonio_Regular_25.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Antonio_Regular_25.c</FilePath>
     </File>
     <File>
       <FileName>lv_font_montserratMedium_12.c</FileName>
@@ -1551,6 +1541,46 @@
       <FileName>lottie_list.mk</FileName>
       <FileType>5</FileType>
       <FilePath>..\..\generated\images\lottie_list.mk</FilePath>
+    </File>
+    <File>
+      <FileName>_0_alpha_136x124.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_0_alpha_136x124.c</FilePath>
+    </File>
+    <File>
+      <FileName>_1_alpha_163x130.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_1_alpha_163x130.c</FilePath>
+    </File>
+    <File>
+      <FileName>_2_alpha_166x125.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_2_alpha_166x125.c</FilePath>
+    </File>
+    <File>
+      <FileName>_3_alpha_180x125.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_3_alpha_180x125.c</FilePath>
+    </File>
+    <File>
+      <FileName>_45_alpha_180x125.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_45_alpha_180x125.c</FilePath>
+    </File>
+    <File>
+      <FileName>_55_alpha_171x132.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_55_alpha_171x132.c</FilePath>
+    </File>
+    <File>
+      <FileName>_61_alpha_171x143.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_61_alpha_171x143.c</FilePath>
+    </File>
+    <File>
+      <FileName>_95_alpha_171x143.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_95_alpha_171x143.c</FilePath>
     </File>
     <File>
       <FileName>_AVNET_alpha_258x74.c</FileName>
@@ -5353,6 +5383,11 @@
       <FilePath>..\..\generated\setup_scr_Normal.c</FilePath>
     </File>
     <File>
+      <FileName>setup_scr_Panel.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\setup_scr_Panel.c</FilePath>
+    </File>
+    <File>
       <FileName>setup_scr_Sleep.c</FileName>
       <FileType>1</FileType>
       <FilePath>..\..\generated\setup_scr_Sleep.c</FilePath>
@@ -5363,11 +5398,6 @@
       <FilePath>..\..\generated\setup_scr_Speaking.c</FilePath>
     </File>
     <File>
-      <FileName>setup_scr_Speakless.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\setup_scr_Speakless.c</FilePath>
-    </File>
-    <File>
       <FileName>setup_scr_Start.c</FileName>
       <FileType>1</FileType>
       <FilePath>..\..\generated\setup_scr_Start.c</FilePath>
@@ -5376,6 +5406,11 @@
       <FileName>setup_scr_Thinking.c</FileName>
       <FileType>1</FileType>
       <FilePath>..\..\generated\setup_scr_Thinking.c</FilePath>
+    </File>
+    <File>
+      <FileName>setup_scr_Weather.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\setup_scr_Weather.c</FilePath>
     </File>
     <File>
       <FileName>widgets_init.c</FileName>
@@ -5418,34 +5453,19 @@
       <FilePath>..\..\generated\guider_fonts\guider_fonts.mk</FilePath>
     </File>
     <File>
+      <FileName>lv_font_Acme_Regular_16.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\guider_fonts\lv_font_Acme_Regular_16.c</FilePath>
+    </File>
+    <File>
+      <FileName>lv_font_Acme_Regular_30.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\guider_fonts\lv_font_Acme_Regular_30.c</FilePath>
+    </File>
+    <File>
       <FileName>lv_font_Alatsi_Regular_21.c</FileName>
       <FileType>1</FileType>
       <FilePath>..\..\generated\guider_fonts\lv_font_Alatsi_Regular_21.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Alatsi_Regular_22.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Alatsi_Regular_22.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Alatsi_Regular_30.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Alatsi_Regular_30.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Amiko_Regular_20.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Amiko_Regular_20.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Amiko_Regular_30.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Amiko_Regular_30.c</FilePath>
-    </File>
-    <File>
-      <FileName>lv_font_Antonio_Regular_25.c</FileName>
-      <FileType>1</FileType>
-      <FilePath>..\..\generated\guider_fonts\lv_font_Antonio_Regular_25.c</FilePath>
     </File>
     <File>
       <FileName>lv_font_montserratMedium_12.c</FileName>
@@ -5481,6 +5501,46 @@
       <FileName>lottie_list.mk</FileName>
       <FileType>5</FileType>
       <FilePath>..\..\generated\images\lottie_list.mk</FilePath>
+    </File>
+    <File>
+      <FileName>_0_alpha_136x124.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_0_alpha_136x124.c</FilePath>
+    </File>
+    <File>
+      <FileName>_1_alpha_163x130.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_1_alpha_163x130.c</FilePath>
+    </File>
+    <File>
+      <FileName>_2_alpha_166x125.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_2_alpha_166x125.c</FilePath>
+    </File>
+    <File>
+      <FileName>_3_alpha_180x125.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_3_alpha_180x125.c</FilePath>
+    </File>
+    <File>
+      <FileName>_45_alpha_180x125.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_45_alpha_180x125.c</FilePath>
+    </File>
+    <File>
+      <FileName>_55_alpha_171x132.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_55_alpha_171x132.c</FilePath>
+    </File>
+    <File>
+      <FileName>_61_alpha_171x143.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_61_alpha_171x143.c</FilePath>
+    </File>
+    <File>
+      <FileName>_95_alpha_171x143.c</FileName>
+      <FileType>1</FileType>
+      <FilePath>..\..\generated\images\_95_alpha_171x143.c</FilePath>
     </File>
     <File>
       <FileName>_AVNET_alpha_258x74.c</FileName>

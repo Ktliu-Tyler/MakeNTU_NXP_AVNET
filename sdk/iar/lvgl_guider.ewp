@@ -4810,22 +4810,13 @@
       <name>$PROJ_DIR$\..\..\generated\guider_fonts\guider_fonts.mk</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_Acme_Regular_16.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_Acme_Regular_30.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_Alatsi_Regular_21.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_Alatsi_Regular_22.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_Alatsi_Regular_30.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_Amiko_Regular_20.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_Amiko_Regular_30.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_Antonio_Regular_25.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\generated\guider_fonts\lv_font_montserratMedium_12.c</name>
@@ -4855,6 +4846,30 @@
       <name>$PROJ_DIR$\..\..\generated\images\lottie_list.mk</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\generated\images\_0_alpha_136x124.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\generated\images\_1_alpha_163x130.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\generated\images\_2_alpha_166x125.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\generated\images\_3_alpha_180x125.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\generated\images\_45_alpha_180x125.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\generated\images\_55_alpha_171x132.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\generated\images\_61_alpha_171x143.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\generated\images\_95_alpha_171x143.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\generated\images\_AVNET_alpha_258x74.c</name>
     </file>
     <file>
@@ -4871,19 +4886,22 @@
     <name>$PROJ_DIR$\..\..\generated\setup_scr_Normal.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\..\..\generated\setup_scr_Panel.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\..\..\generated\setup_scr_Sleep.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\..\generated\setup_scr_Speaking.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\..\..\generated\setup_scr_Speakless.c</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\..\..\generated\setup_scr_Start.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\..\generated\setup_scr_Thinking.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\..\generated\setup_scr_Weather.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\..\generated\widgets_init.c</name>

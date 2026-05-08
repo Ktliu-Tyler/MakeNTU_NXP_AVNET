@@ -78,9 +78,10 @@ void init_scr_del_flag(lv_ui *ui)
     ui->Thinking_del = true;
     ui->Sleep_del = true;
     ui->Speaking_del = true;
-    ui->Speakless_del = true;
     ui->Music_del = true;
     ui->Focus_del = true;
+    ui->Weather_del = true;
+    ui->Panel_del = true;
 }
 
 void setup_ui(lv_ui *ui)

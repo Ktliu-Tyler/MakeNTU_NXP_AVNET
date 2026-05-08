@@ -16,6 +16,10 @@
 
 
 
+int Sleep_digital_clock_Sleep_min_value = 31;
+int Sleep_digital_clock_Sleep_hour_value = 1;
+int Sleep_digital_clock_Sleep_sec_value = 1;
+char Sleep_digital_clock_Sleep_meridiem[] = "AM";
 void setup_scr_Sleep(lv_ui *ui)
 {
     //Write codes Sleep
@@ -78,37 +82,37 @@ void setup_scr_Sleep(lv_ui *ui)
     ui->Sleep_ZZZ2 = lv_label_create(ui->Sleep);
     lv_label_set_text(ui->Sleep_ZZZ2, "Z Z ");
     lv_label_set_long_mode(ui->Sleep_ZZZ2, LV_LABEL_LONG_CLIP);
-    lv_obj_set_pos(ui->Sleep_ZZZ2, 372, 67);
-    lv_obj_set_size(ui->Sleep_ZZZ2, 91, 29);
+    lv_obj_set_pos(ui->Sleep_ZZZ2, 390, 57);
+    lv_obj_set_size(ui->Sleep_ZZZ2, 66, 24);
 
     //Write style for Sleep_ZZZ2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->Sleep_ZZZ2, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->Sleep_ZZZ2, &lv_font_Alatsi_Regular_30, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Sleep_ZZZ2, &lv_font_Acme_Regular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->Sleep_ZZZ2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->Sleep_ZZZ2, 2, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->Sleep_ZZZ2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_pad_top(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_pad_right(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_pad_bottom(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_pad_left(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->Sleep_ZZZ2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //Write codes Sleep_ZZZ1
     ui->Sleep_ZZZ1 = lv_label_create(ui->Sleep);
     lv_label_set_text(ui->Sleep_ZZZ1, "Z ");
     lv_label_set_long_mode(ui->Sleep_ZZZ1, LV_LABEL_LONG_CLIP);
-    lv_obj_set_pos(ui->Sleep_ZZZ1, 345, 93);
+    lv_obj_set_pos(ui->Sleep_ZZZ1, 329, 111);
     lv_obj_set_size(ui->Sleep_ZZZ1, 73, 36);
 
     //Write style for Sleep_ZZZ1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Sleep_ZZZ1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->Sleep_ZZZ1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->Sleep_ZZZ1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->Sleep_ZZZ1, &lv_font_Alatsi_Regular_22, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Sleep_ZZZ1, &lv_font_Acme_Regular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->Sleep_ZZZ1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->Sleep_ZZZ1, 2, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->Sleep_ZZZ1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -132,16 +136,63 @@ void setup_scr_Sleep(lv_ui *ui)
     lv_obj_set_size(ui->Sleep_btn_1, 40, 20);
 
     //Write style for Sleep_btn_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_bg_opa(ui->Sleep_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->Sleep_btn_1, lv_color_hex(0xc6e1f9), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->Sleep_btn_1, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(ui->Sleep_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->Sleep_btn_1, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->Sleep_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->Sleep_btn_1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui->Sleep_btn_1, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->Sleep_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->Sleep_btn_1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->Sleep_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Sleep_btn_1, lv_color_hex(0xc6e1f9), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Sleep_btn_1, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Sleep_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Sleep_digital_clock_Sleep
+    static bool Sleep_digital_clock_Sleep_timer_enabled = false;
+    ui->Sleep_digital_clock_Sleep = lv_dclock_create(ui->Sleep, "1:31:01 AM");
+    if (!Sleep_digital_clock_Sleep_timer_enabled) {
+        lv_timer_create(Sleep_digital_clock_Sleep_timer, 1000, NULL);
+        Sleep_digital_clock_Sleep_timer_enabled = true;
+    }
+    lv_obj_set_pos(ui->Sleep_digital_clock_Sleep, 120, 64);
+    lv_obj_set_size(ui->Sleep_digital_clock_Sleep, 223, 38);
+
+    //Write style for Sleep_digital_clock_Sleep, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Sleep_digital_clock_Sleep, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Sleep_digital_clock_Sleep, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Sleep_digital_clock_Sleep, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Sleep_digital_clock_Sleep, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Sleep_digital_clock_Sleep, &lv_font_Acme_Regular_30, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Sleep_digital_clock_Sleep, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->Sleep_digital_clock_Sleep, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Sleep_digital_clock_Sleep, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->Sleep_digital_clock_Sleep, 7, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->Sleep_digital_clock_Sleep, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->Sleep_digital_clock_Sleep, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->Sleep_digital_clock_Sleep, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Sleep_label_1
+    ui->Sleep_label_1 = lv_label_create(ui->Sleep);
+    lv_label_set_text(ui->Sleep_label_1, "Z Z ");
+    lv_label_set_long_mode(ui->Sleep_label_1, LV_LABEL_LONG_CLIP);
+    lv_obj_set_pos(ui->Sleep_label_1, 346, 78);
+    lv_obj_set_size(ui->Sleep_label_1, 66, 26);
+
+    //Write style for Sleep_label_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Sleep_label_1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Sleep_label_1, &lv_font_Acme_Regular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Sleep_label_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->Sleep_label_1, 2, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_line_space(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Sleep_label_1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->Sleep_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //The custom code of Sleep.
 

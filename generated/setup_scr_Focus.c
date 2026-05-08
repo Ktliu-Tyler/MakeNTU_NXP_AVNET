@@ -16,9 +16,9 @@
 
 
 
-int Focus_digital_clock_1_min_value = 0;
-int Focus_digital_clock_1_hour_value = 0;
-int Focus_digital_clock_1_sec_value = 0;
+int Focus_digital_clock_Focus_min_value = 0;
+int Focus_digital_clock_Focus_hour_value = 0;
+int Focus_digital_clock_Focus_sec_value = 0;
 void setup_scr_Focus(lv_ui *ui)
 {
     //Write codes Focus
@@ -50,7 +50,7 @@ void setup_scr_Focus(lv_ui *ui)
     lv_obj_set_style_radius(ui->Focus_eyeR, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->Focus_eyeR, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->Focus_eyeR, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->Focus_eyeR, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Focus_eyeR, &lv_font_Acme_Regular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->Focus_eyeR, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->Focus_eyeR, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
@@ -73,7 +73,7 @@ void setup_scr_Focus(lv_ui *ui)
     lv_obj_set_style_radius(ui->Focus_eyeL, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->Focus_eyeL, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->Focus_eyeL, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->Focus_eyeL, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Focus_eyeL, &lv_font_Acme_Regular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->Focus_eyeL, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->Focus_eyeL, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
@@ -117,7 +117,7 @@ void setup_scr_Focus(lv_ui *ui)
     lv_obj_set_style_radius(ui->Focus_mouth, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->Focus_mouth, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->Focus_mouth, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->Focus_mouth, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Focus_mouth, &lv_font_Acme_Regular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->Focus_mouth, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_align(ui->Focus_mouth, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
@@ -147,31 +147,31 @@ void setup_scr_Focus(lv_ui *ui)
     lv_obj_set_style_line_opa(ui->Focus_line_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_line_rounded(ui->Focus_line_1, true, LV_PART_MAIN|LV_STATE_DEFAULT);
 
-    //Write codes Focus_digital_clock_1
-    static bool Focus_digital_clock_1_timer_enabled = false;
-    ui->Focus_digital_clock_1 = lv_dclock_create(ui->Focus, "0:00:00");
-    if (!Focus_digital_clock_1_timer_enabled) {
-        lv_timer_create(Focus_digital_clock_1_timer, 1000, NULL);
-        Focus_digital_clock_1_timer_enabled = true;
+    //Write codes Focus_digital_clock_Focus
+    static bool Focus_digital_clock_Focus_timer_enabled = false;
+    ui->Focus_digital_clock_Focus = lv_dclock_create(ui->Focus, "0:00:00");
+    if (!Focus_digital_clock_Focus_timer_enabled) {
+        lv_timer_create(Focus_digital_clock_Focus_timer, 1000, NULL);
+        Focus_digital_clock_Focus_timer_enabled = true;
     }
-    lv_obj_set_pos(ui->Focus_digital_clock_1, 180, 24);
-    lv_obj_set_size(ui->Focus_digital_clock_1, 130, 36);
+    lv_obj_set_pos(ui->Focus_digital_clock_Focus, 176, 24);
+    lv_obj_set_size(ui->Focus_digital_clock_Focus, 134, 43);
 
-    //Write style for Focus_digital_clock_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
-    lv_obj_set_style_radius(ui->Focus_digital_clock_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->Focus_digital_clock_1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->Focus_digital_clock_1, &lv_font_Antonio_Regular_25, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui->Focus_digital_clock_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(ui->Focus_digital_clock_1, 2, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_align(ui->Focus_digital_clock_1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui->Focus_digital_clock_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui->Focus_digital_clock_1, lv_color_hex(0x292929), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_grad_dir(ui->Focus_digital_clock_1, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_top(ui->Focus_digital_clock_1, 7, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_right(ui->Focus_digital_clock_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_bottom(ui->Focus_digital_clock_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_left(ui->Focus_digital_clock_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(ui->Focus_digital_clock_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    //Write style for Focus_digital_clock_Focus, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_radius(ui->Focus_digital_clock_Focus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Focus_digital_clock_Focus, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Focus_digital_clock_Focus, &lv_font_Acme_Regular_30, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Focus_digital_clock_Focus, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(ui->Focus_digital_clock_Focus, 2, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Focus_digital_clock_Focus, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui->Focus_digital_clock_Focus, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Focus_digital_clock_Focus, lv_color_hex(0x292929), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Focus_digital_clock_Focus, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_top(ui->Focus_digital_clock_Focus, 7, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_right(ui->Focus_digital_clock_Focus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_bottom(ui->Focus_digital_clock_Focus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_left(ui->Focus_digital_clock_Focus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Focus_digital_clock_Focus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //The custom code of Focus.
 
@@ -179,4 +179,6 @@ void setup_scr_Focus(lv_ui *ui)
     //Update current screen layout.
     lv_obj_update_layout(ui->Focus);
 
+    //Init events for screen.
+    events_init_Focus(ui);
 }

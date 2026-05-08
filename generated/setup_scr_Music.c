@@ -82,7 +82,7 @@ void setup_scr_Music(lv_ui *ui)
     lv_obj_align(ui->Music_relieve_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->Music_relieve, 0, LV_STATE_DEFAULT);
     lv_obj_set_width(ui->Music_relieve_label, LV_PCT(100));
-    lv_obj_set_pos(ui->Music_relieve, 11, 221);
+    lv_obj_set_pos(ui->Music_relieve, 12, 221);
     lv_obj_set_size(ui->Music_relieve, 458, 92);
 
     //Write style for Music_relieve, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
@@ -125,14 +125,14 @@ void setup_scr_Music(lv_ui *ui)
     ui->Music_label_1 = lv_label_create(ui->Music);
     lv_label_set_text(ui->Music_label_1, "3");
     lv_label_set_long_mode(ui->Music_label_1, LV_LABEL_LONG_WRAP);
-    lv_obj_set_pos(ui->Music_label_1, 194, 211);
+    lv_obj_set_pos(ui->Music_label_1, 192, 224);
     lv_obj_set_size(ui->Music_label_1, 100, 32);
 
     //Write style for Music_label_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Music_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->Music_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(ui->Music_label_1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->Music_label_1, &lv_font_Amiko_Regular_30, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Music_label_1, &lv_font_Acme_Regular_30, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->Music_label_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->Music_label_1, 2, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->Music_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
@@ -144,10 +144,151 @@ void setup_scr_Music(lv_ui *ui)
     lv_obj_set_style_pad_left(ui->Music_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_width(ui->Music_label_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
 
+    //Write codes Music_mus3
+    ui->Music_mus3 = lv_btn_create(ui->Music);
+    ui->Music_mus3_label = lv_label_create(ui->Music_mus3);
+    lv_label_set_text(ui->Music_mus3_label, "");
+    lv_label_set_long_mode(ui->Music_mus3_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->Music_mus3_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->Music_mus3, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->Music_mus3_label, LV_PCT(100));
+    lv_obj_set_pos(ui->Music_mus3, 343, 243);
+    lv_obj_set_size(ui->Music_mus3, 22, 16);
+
+    //Write style for Music_mus3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Music_mus3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Music_mus3, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Music_mus3, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Music_mus3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Music_mus3, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Music_mus3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Music_mus3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Music_mus3, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Music_mus3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Music_mus3, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Music_mus2
+    ui->Music_mus2 = lv_btn_create(ui->Music);
+    ui->Music_mus2_label = lv_label_create(ui->Music_mus2);
+    lv_label_set_text(ui->Music_mus2_label, "");
+    lv_label_set_long_mode(ui->Music_mus2_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->Music_mus2_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->Music_mus2, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->Music_mus2_label, LV_PCT(100));
+    lv_obj_set_pos(ui->Music_mus2, 360, 215);
+    lv_obj_set_size(ui->Music_mus2, 29, 10);
+
+    //Write style for Music_mus2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Music_mus2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Music_mus2, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Music_mus2, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Music_mus2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Music_mus2, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Music_mus2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Music_mus2, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Music_mus2, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Music_mus2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Music_mus2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Music_mus
+    ui->Music_mus = lv_btn_create(ui->Music);
+    ui->Music_mus_label = lv_label_create(ui->Music_mus);
+    lv_label_set_text(ui->Music_mus_label, "");
+    lv_label_set_long_mode(ui->Music_mus_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->Music_mus_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->Music_mus, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->Music_mus_label, LV_PCT(100));
+    lv_obj_set_pos(ui->Music_mus, 357, 215);
+    lv_obj_set_size(ui->Music_mus, 8, 34);
+
+    //Write style for Music_mus, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Music_mus, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Music_mus, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Music_mus, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Music_mus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Music_mus, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Music_mus, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Music_mus, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Music_mus, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Music_mus, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Music_mus, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Music_btn_1
+    ui->Music_btn_1 = lv_btn_create(ui->Music);
+    ui->Music_btn_1_label = lv_label_create(ui->Music_btn_1);
+    lv_label_set_text(ui->Music_btn_1_label, "");
+    lv_label_set_long_mode(ui->Music_btn_1_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->Music_btn_1_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->Music_btn_1, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->Music_btn_1_label, LV_PCT(100));
+    lv_obj_set_pos(ui->Music_btn_1, 398, 144);
+    lv_obj_set_size(ui->Music_btn_1, 22, 16);
+
+    //Write style for Music_btn_1, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Music_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Music_btn_1, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Music_btn_1, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Music_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Music_btn_1, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Music_btn_1, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Music_btn_1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Music_btn_1, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Music_btn_1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Music_btn_1, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Music_btn_2
+    ui->Music_btn_2 = lv_btn_create(ui->Music);
+    ui->Music_btn_2_label = lv_label_create(ui->Music_btn_2);
+    lv_label_set_text(ui->Music_btn_2_label, "");
+    lv_label_set_long_mode(ui->Music_btn_2_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->Music_btn_2_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->Music_btn_2, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->Music_btn_2_label, LV_PCT(100));
+    lv_obj_set_pos(ui->Music_btn_2, 412, 119);
+    lv_obj_set_size(ui->Music_btn_2, 8, 34);
+
+    //Write style for Music_btn_2, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Music_btn_2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Music_btn_2, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Music_btn_2, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Music_btn_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Music_btn_2, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Music_btn_2, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Music_btn_2, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Music_btn_2, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Music_btn_2, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Music_btn_2, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Music_btn_3
+    ui->Music_btn_3 = lv_btn_create(ui->Music);
+    ui->Music_btn_3_label = lv_label_create(ui->Music_btn_3);
+    lv_label_set_text(ui->Music_btn_3_label, "");
+    lv_label_set_long_mode(ui->Music_btn_3_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->Music_btn_3_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->Music_btn_3, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->Music_btn_3_label, LV_PCT(100));
+    lv_obj_set_pos(ui->Music_btn_3, 416, 119);
+    lv_obj_set_size(ui->Music_btn_3, 29, 10);
+
+    //Write style for Music_btn_3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Music_btn_3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Music_btn_3, lv_color_hex(0x2195f6), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Music_btn_3, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Music_btn_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Music_btn_3, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Music_btn_3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Music_btn_3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Music_btn_3, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Music_btn_3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Music_btn_3, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
     //The custom code of Music.
+
 
 
     //Update current screen layout.
     lv_obj_update_layout(ui->Music);
 
+    //Init events for screen.
+    events_init_Music(ui);
 }

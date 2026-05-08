@@ -23,6 +23,10 @@ void events_init_Normal(lv_ui *ui);
 void events_init_Thinking(lv_ui *ui);
 void events_init_Sleep(lv_ui *ui);
 void events_init_Speaking(lv_ui *ui);
+void events_init_Music(lv_ui *ui);
+void events_init_Focus(lv_ui *ui);
+void events_init_Weather(lv_ui *ui);
+void events_init_Panel(lv_ui *ui);
 
 #ifdef __cplusplus
 }
