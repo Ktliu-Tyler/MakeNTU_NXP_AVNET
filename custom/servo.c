@@ -26,13 +26,14 @@
 #define SERVO_PITCH_PORT        PORT1
 #define SERVO_PITCH_GPIO        GPIO1
 #define SERVO_PITCH_PIN         12U
-#define SERVO_PITCH_ALT         kPORT_MuxAlt0
+#define SERVO_PITCH_ALT         kPORT_MuxAsGpio
 
 /* ── Yaw channel (P1_13 -> GPIO1_13) ── */
-#define SERVO_YAW_PORT          PORT1
-#define SERVO_YAW_GPIO          GPIO1
-#define SERVO_YAW_PIN           13U
-#define SERVO_YAW_ALT           kPORT_MuxAlt0
+/* ── Yaw channel (P4_4 -> GPIO4_4) ── */
+#define SERVO_YAW_PORT          PORT4
+#define SERVO_YAW_GPIO          GPIO4
+#define SERVO_YAW_PIN           4U
+#define SERVO_YAW_ALT           kPORT_MuxAsGpio
 
 /* ── PWM parameters ── */
 #define SERVO_PWM_PERIOD_US     20000U
@@ -80,6 +81,9 @@ static void servo_gpio_init(void)
 
     CLOCK_EnableClock(kCLOCK_Port1);
     CLOCK_EnableClock(kCLOCK_Gpio1);
+    /* Ensure Port4/GPIO4 clock enabled if yaw uses P4_4 */
+    CLOCK_EnableClock(kCLOCK_Port4);
+    CLOCK_EnableClock(kCLOCK_Gpio4);
 
     PORT_SetPinMux(SERVO_PITCH_PORT, SERVO_PITCH_PIN, SERVO_PITCH_ALT);
     PORT_SetPinMux(SERVO_YAW_PORT, SERVO_YAW_PIN, SERVO_YAW_ALT);

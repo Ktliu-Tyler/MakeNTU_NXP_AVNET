@@ -107,6 +107,10 @@ typedef struct
 	lv_obj_t *Speaking_eyeL1_label;
 	lv_obj_t *Speaking_eyebowL1;
 	lv_obj_t *Speaking_eyebowR1;
+	lv_obj_t *Speaking_emoL3;
+	lv_obj_t *Speaking_emoL3_label;
+	lv_obj_t *Speaking_emoR3;
+	lv_obj_t *Speaking_emoR3_label;
 	lv_obj_t *Speakless;
 	bool Speakless_del;
 	lv_obj_t *Speakless_eyeL;

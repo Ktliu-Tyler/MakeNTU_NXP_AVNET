@@ -150,7 +150,7 @@ void setup_scr_Speaking(lv_ui *ui)
     lv_obj_align(ui->Speaking_eyeR5_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->Speaking_eyeR5, 0, LV_STATE_DEFAULT);
     lv_obj_set_width(ui->Speaking_eyeR5_label, LV_PCT(100));
-    lv_obj_set_pos(ui->Speaking_eyeR5, 266, 150);
+    lv_obj_set_pos(ui->Speaking_eyeR5, 268, 150);
     lv_obj_set_size(ui->Speaking_eyeR5, 80, 19);
     lv_obj_add_flag(ui->Speaking_eyeR5, LV_OBJ_FLAG_HIDDEN);
 
@@ -270,8 +270,8 @@ void setup_scr_Speaking(lv_ui *ui)
     lv_obj_align(ui->Speaking_eyeL3_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->Speaking_eyeL3, 0, LV_STATE_DEFAULT);
     lv_obj_set_width(ui->Speaking_eyeL3_label, LV_PCT(100));
-    lv_obj_set_pos(ui->Speaking_eyeL3, 125, 85);
-    lv_obj_set_size(ui->Speaking_eyeL3, 80, 130);
+    lv_obj_set_pos(ui->Speaking_eyeL3, 120, 118);
+    lv_obj_set_size(ui->Speaking_eyeL3, 75, 95);
     lv_obj_add_flag(ui->Speaking_eyeL3, LV_OBJ_FLAG_HIDDEN);
 
     //Write style for Speaking_eyeL3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
@@ -294,8 +294,8 @@ void setup_scr_Speaking(lv_ui *ui)
     lv_obj_align(ui->Speaking_eyeR3_label, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_pad_all(ui->Speaking_eyeR3, 0, LV_STATE_DEFAULT);
     lv_obj_set_width(ui->Speaking_eyeR3_label, LV_PCT(100));
-    lv_obj_set_pos(ui->Speaking_eyeR3, 275, 85);
-    lv_obj_set_size(ui->Speaking_eyeR3, 80, 129);
+    lv_obj_set_pos(ui->Speaking_eyeR3, 289, 123);
+    lv_obj_set_size(ui->Speaking_eyeR3, 75, 95);
     lv_obj_add_flag(ui->Speaking_eyeR3, LV_OBJ_FLAG_HIDDEN);
 
     //Write style for Speaking_eyeR3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
@@ -312,9 +312,9 @@ void setup_scr_Speaking(lv_ui *ui)
 
     //Write codes Speaking_eyebowR3
     ui->Speaking_eyebowR3 = lv_line_create(ui->Speaking);
-    static lv_point_t Speaking_eyebowR3[] = {{100, 0},{0, 20},};
+    static lv_point_t Speaking_eyebowR3[] = {{100, 20},{0, 0},};
     lv_line_set_points(ui->Speaking_eyebowR3, Speaking_eyebowR3, 2);
-    lv_obj_set_pos(ui->Speaking_eyebowR3, 266, 76);
+    lv_obj_set_pos(ui->Speaking_eyebowR3, 298, 85);
     lv_obj_set_size(ui->Speaking_eyebowR3, 115, 51);
     lv_obj_add_flag(ui->Speaking_eyebowR3, LV_OBJ_FLAG_HIDDEN);
 
@@ -326,9 +326,9 @@ void setup_scr_Speaking(lv_ui *ui)
 
     //Write codes Speaking_eyebowL3
     ui->Speaking_eyebowL3 = lv_line_create(ui->Speaking);
-    static lv_point_t Speaking_eyebowL3[] = {{100, 20},{0, 0},};
+    static lv_point_t Speaking_eyebowL3[] = {{100, 0},{0, 20},};
     lv_line_set_points(ui->Speaking_eyebowL3, Speaking_eyebowL3, 2);
-    lv_obj_set_pos(ui->Speaking_eyebowL3, 115, 76);
+    lv_obj_set_pos(ui->Speaking_eyebowL3, 91, 88);
     lv_obj_set_size(ui->Speaking_eyebowL3, 109, 62);
     lv_obj_add_flag(ui->Speaking_eyebowL3, LV_OBJ_FLAG_HIDDEN);
 
@@ -571,6 +571,54 @@ void setup_scr_Speaking(lv_ui *ui)
     lv_obj_set_style_line_color(ui->Speaking_eyebowR1, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_line_opa(ui->Speaking_eyebowR1, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_line_rounded(ui->Speaking_eyebowR1, true, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Speaking_emoL3
+    ui->Speaking_emoL3 = lv_btn_create(ui->Speaking);
+    ui->Speaking_emoL3_label = lv_label_create(ui->Speaking_emoL3);
+    lv_label_set_text(ui->Speaking_emoL3_label, "");
+    lv_label_set_long_mode(ui->Speaking_emoL3_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->Speaking_emoL3_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->Speaking_emoL3, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->Speaking_emoL3_label, LV_PCT(100));
+    lv_obj_set_pos(ui->Speaking_emoL3, 104, 208);
+    lv_obj_set_size(ui->Speaking_emoL3, 95, 28);
+    lv_obj_add_flag(ui->Speaking_emoL3, LV_OBJ_FLAG_HIDDEN);
+
+    //Write style for Speaking_emoL3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Speaking_emoL3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Speaking_emoL3, lv_color_hex(0x8bc6f8), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Speaking_emoL3, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Speaking_emoL3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Speaking_emoL3, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Speaking_emoL3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Speaking_emoL3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Speaking_emoL3, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Speaking_emoL3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Speaking_emoL3, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
+
+    //Write codes Speaking_emoR3
+    ui->Speaking_emoR3 = lv_btn_create(ui->Speaking);
+    ui->Speaking_emoR3_label = lv_label_create(ui->Speaking_emoR3);
+    lv_label_set_text(ui->Speaking_emoR3_label, "");
+    lv_label_set_long_mode(ui->Speaking_emoR3_label, LV_LABEL_LONG_WRAP);
+    lv_obj_align(ui->Speaking_emoR3_label, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_pad_all(ui->Speaking_emoR3, 0, LV_STATE_DEFAULT);
+    lv_obj_set_width(ui->Speaking_emoR3_label, LV_PCT(100));
+    lv_obj_set_pos(ui->Speaking_emoR3, 283, 208);
+    lv_obj_set_size(ui->Speaking_emoR3, 89, 26);
+    lv_obj_add_flag(ui->Speaking_emoR3, LV_OBJ_FLAG_HIDDEN);
+
+    //Write style for Speaking_emoR3, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
+    lv_obj_set_style_bg_opa(ui->Speaking_emoR3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui->Speaking_emoR3, lv_color_hex(0x75bdf7), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(ui->Speaking_emoR3, LV_GRAD_DIR_NONE, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(ui->Speaking_emoR3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(ui->Speaking_emoR3, 5, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(ui->Speaking_emoR3, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Speaking_emoR3, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Speaking_emoR3, &lv_font_montserratMedium_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui->Speaking_emoR3, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_align(ui->Speaking_emoR3, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN|LV_STATE_DEFAULT);
 
     //The custom code of Speaking.
 

@@ -210,7 +210,6 @@ void SLEEPGui(char* pValue)
     PRINTF("switch to SLEEP");
     robot.Facestatus = 2;
 }
-
 void NORMALGui(char* pValue)
 {
 	ui_load_scr_animation(&guider_ui, &guider_ui.Normal, guider_ui.Normal_del, &guider_ui.Normal_del, setup_scr_Normal, LV_SCR_LOAD_ANIM_NONE, 200, 200, true, true);
@@ -230,30 +229,126 @@ void SpeakingGui(char* pValue)
     ui_load_scr_animation(&guider_ui, &guider_ui.Speaking, guider_ui.Speaking_del, &guider_ui.Speaking_del, setup_scr_Speaking, LV_SCR_LOAD_ANIM_NONE, 0, 0, true, true);
     PRINTF("switch to SPEAKING");
     robot.speakstatus = 1;
-    unsigned int value;
-    sscanf(pValue, "%d", &value);
+    unsigned int value = 0;
+    if (pValue != NULL)
+    {
+        sscanf(pValue, "%u", &value);
+    }
     robot.emotionstatus = value;
+
+    typedef struct
+    {
+        int32_t eyeL_x;
+        int32_t eyeL_y;
+        int32_t eyeL_w;
+        int32_t eyeL_h;
+        uint32_t eyeL_color_hex;
+        int32_t eyeR_x;
+        int32_t eyeR_y;
+        int32_t eyeR_w;
+        int32_t eyeR_h;
+        uint32_t eyeR_color_hex;
+        int32_t browL_x;
+        int32_t browL_y;
+        int32_t browL_w;
+        int32_t browL_h;
+        int32_t browR_x;
+        int32_t browR_y;
+        int32_t browR_w;
+        int32_t browR_h;
+    } speaking_pose_t;
+
+    const speaking_pose_t *pose = NULL;
+    lv_obj_t *eyebowL_obj = guider_ui.Speaking_eyebowL;
+    lv_obj_t *eyebowR_obj = guider_ui.Speaking_eyebowR;
+    static const speaking_pose_t neutral_pose = {125, 85, 80, 130, 0x2195f6, 275, 85, 80, 130, 0x2195f6, 135, 66, 127, 47, 286, 64, 109, 62};
+    static const speaking_pose_t concerned_pose = {91, 64, 124, 124, 0x4ba5ef, 266, 64, 126, 124, 0x5aa7ef, 135, 26, 89, 46, 303, 30, 115, 51};
+    static const speaking_pose_t angry_pose = {109, 123, 100, 80, 0xdb3750, 275, 123, 100, 80, 0xdb3750, 112, 113, 127, 47, 275, 113, 109, 62};
+    static const speaking_pose_t sad_pose = {125, 85, 80, 130, 0x2195f6, 275, 85, 80, 129, 0x2195f6, 115, 76, 109, 62, 266, 76, 115, 51};
+    static const speaking_pose_t happy_pose = {125, 103, 80, 82, 0xe79faa, 275, 103, 80, 80, 0xe79faa, 91, 56, 115, 51, 283, 56, 109, 62};
+    static const speaking_pose_t confused_pose = {125, 150, 80, 19, 0x2195f6, 266, 150, 80, 19, 0x2195f6, 112, 118, 115, 51, 266, 94, 109, 62};
+
     switch (value)
     {
-    case 0:
-        PRINTF("emotion: neutral");
-        break;
     case 1:
         PRINTF("emotion: concerned");
+        pose = &concerned_pose;
+        eyebowL_obj = guider_ui.Speaking_eyebowL1;
+        eyebowR_obj = guider_ui.Speaking_eyebowR1;
         break;
     case 2:
         PRINTF("emotion: angry");
+        pose = &angry_pose;
+        eyebowL_obj = guider_ui.Speaking_eyebowL2;
+        eyebowR_obj = guider_ui.Speaking_eyebowR2;
         break;
     case 3:
         PRINTF("emotion: sad");
+        pose = &sad_pose;
+        lv_obj_clear_flag(guider_ui.Speaking_emoL3, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(guider_ui.Speaking_emoR3, LV_OBJ_FLAG_HIDDEN);
+        eyebowL_obj = guider_ui.Speaking_eyebowL3;
+        eyebowR_obj = guider_ui.Speaking_eyebowR3;
         break;
     case 4:
         PRINTF("emotion: happy");
+        pose = &happy_pose;
+        lv_obj_clear_flag(guider_ui.Speaking_emo4L, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(guider_ui.Speaking_emo4R, LV_OBJ_FLAG_HIDDEN);
+        eyebowL_obj = guider_ui.Speaking_eyebowL4;
+        eyebowR_obj = guider_ui.Speaking_eyebowR4;
         break;
     case 5:
         PRINTF("emotion: confused");
+        pose = &confused_pose;
+        eyebowL_obj = guider_ui.Speaking_eyebowL5;
+        eyebowR_obj = guider_ui.Speaking_eyebowR5;
+        break;
+    case 0:
+    default:
+        PRINTF("emotion: neutral");
+        pose = &neutral_pose;
         break;
     }
+
+    lv_obj_add_flag(guider_ui.Speaking_eyebowL, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowR, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowL1, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowR1, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowL2, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowR2, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowL3, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowR3, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowL4, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowR4, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowL5, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(guider_ui.Speaking_eyebowR5, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(eyebowL_obj, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(eyebowR_obj, LV_OBJ_FLAG_HIDDEN);
+
+    ui_animation(guider_ui.Speaking_eyeL, 220, 0, lv_obj_get_x(guider_ui.Speaking_eyeL), pose->eyeL_x, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_x, NULL, NULL, NULL);
+    ui_animation(guider_ui.Speaking_eyeL, 220, 0, lv_obj_get_y(guider_ui.Speaking_eyeL), pose->eyeL_y, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+    ui_animation(guider_ui.Speaking_eyeL, 220, 0, lv_obj_get_width(guider_ui.Speaking_eyeL), pose->eyeL_w, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_width, NULL, NULL, NULL);
+    ui_animation(guider_ui.Speaking_eyeL, 220, 0, lv_obj_get_height(guider_ui.Speaking_eyeL), pose->eyeL_h, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
+    lv_obj_set_style_bg_color(guider_ui.Speaking_eyeL, lv_color_hex(pose->eyeL_color_hex), LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_animation(guider_ui.Speaking_eyeR, 220, 0, lv_obj_get_x(guider_ui.Speaking_eyeR), pose->eyeR_x, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_x, NULL, NULL, NULL);
+    ui_animation(guider_ui.Speaking_eyeR, 220, 0, lv_obj_get_y(guider_ui.Speaking_eyeR), pose->eyeR_y, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+    ui_animation(guider_ui.Speaking_eyeR, 220, 0, lv_obj_get_width(guider_ui.Speaking_eyeR), pose->eyeR_w, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_width, NULL, NULL, NULL);
+    ui_animation(guider_ui.Speaking_eyeR, 220, 0, lv_obj_get_height(guider_ui.Speaking_eyeR), pose->eyeR_h, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
+    lv_obj_set_style_bg_color(guider_ui.Speaking_eyeR, lv_color_hex(pose->eyeR_color_hex), LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_animation(eyebowL_obj, 220, 0, lv_obj_get_x(eyebowL_obj), pose->browL_x, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_x, NULL, NULL, NULL);
+    ui_animation(eyebowL_obj, 220, 0, lv_obj_get_y(eyebowL_obj), pose->browL_y, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+    ui_animation(eyebowL_obj, 220, 0, lv_obj_get_width(eyebowL_obj), pose->browL_w, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_width, NULL, NULL, NULL);
+    ui_animation(eyebowL_obj, 220, 0, lv_obj_get_height(eyebowL_obj), pose->browL_h, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
+    lv_obj_set_style_line_color(eyebowL_obj, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_animation(eyebowR_obj, 220, 0, lv_obj_get_x(eyebowR_obj), pose->browR_x, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_x, NULL, NULL, NULL);
+    ui_animation(eyebowR_obj, 220, 0, lv_obj_get_y(eyebowR_obj), pose->browR_y, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_y, NULL, NULL, NULL);
+    ui_animation(eyebowR_obj, 220, 0, lv_obj_get_width(eyebowR_obj), pose->browR_w, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_width, NULL, NULL, NULL);
+    ui_animation(eyebowR_obj, 220, 0, lv_obj_get_height(eyebowR_obj), pose->browR_h, &lv_anim_path_linear, 1, 0, 0, 0, (lv_anim_exec_xcb_t)lv_obj_set_height, NULL, NULL, NULL);
+    lv_obj_set_style_line_color(eyebowR_obj, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
 }
 
 void MusicGui(char* pValue)
@@ -268,29 +363,72 @@ void FocusGui(char* pValue)
     ui_load_scr_animation(&guider_ui, &guider_ui.Focus, guider_ui.Focus_del, &guider_ui.Focus_del, setup_scr_Focus, LV_SCR_LOAD_ANIM_NONE, 0, 0, true, true);
     PRINTF("switch to FOCUS");
     robot.Facestatus = 4;
-    robot.speakstatus = 0;
+    robot.speakstatus = 3;
+}
+
+static bool ParseMotorAngle(const char *pValue, int *out_angle)
+{
+    int angle = 0;
+
+    if (pValue == NULL || out_angle == NULL) {
+        return false;
+    }
+
+    // 支援 pValue = "90" 或 pValue = "MotorYaw 90"
+    if (sscanf(pValue, " %d", &angle) == 1 ||
+        sscanf(pValue, " %*s %d", &angle) == 1) {
+        *out_angle = angle;
+        return true;
+    }
+
+    return false;
 }
 
 void MotorControlPitch(char* pValue)
 {
-    unsigned int value;
-    sscanf(pValue, "%d", &value);
+    int value = 90;
+
+    PRINTF("Motor Pitch raw pValue = [%s]\r\n", pValue ? pValue : "(null)");
+
+    if (!ParseMotorAngle(pValue, &value)) {
+        PRINTF("Motor Pitch parse failed\r\n");
+        return;
+    }
+
+    if (value < 65) value = 65;
+    if (value > 115) value = 115;
+
     robot.motorP = value;
+    PRINTF("Motor Pitch = %d\r\n", value);
     Servo_SetPitch(value);
 }
 
 void MotorControlYaw(char* pValue)
 {
-    unsigned int value;
-    sscanf(pValue, "%d", &value);
+    int value = 90;
+
+    PRINTF("Motor Yaw raw pValue = [%s]\r\n", pValue ? pValue : "(null)");
+
+    if (!ParseMotorAngle(pValue, &value)) {
+        PRINTF("Motor Yaw parse failed\r\n");
+        return;
+    }
+
+    if (value < 0) value = 0;
+    if (value > 180) value = 180;
+
     robot.motorY = value;
+    PRINTF("Motor Yaw = %d\r\n", value);
     Servo_SetYaw(value);
 }
 
 void ShowNumber(char* pValue)
 {
 	unsigned int value=0;
-	sscanf(pValue,"%d",&value);
+    if (pValue != NULL)
+    {
+        sscanf(pValue, "%u", &value);
+    }
 	PRINTF("Number = %d\r\n" , value);
 }
 
