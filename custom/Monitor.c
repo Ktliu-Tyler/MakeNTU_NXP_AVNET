@@ -22,7 +22,15 @@
 static UCHAR m_u8ReciveChar=0;
 static CHAR m_szReciveBuf[MONITOR_LINE_MAX_LENGTH];
 static UCHAR m_u8SpecialSimpleBuf[4];
-static UCHAR m_u8ReciveCount=0;
+static UINT m_u8ReciveCount=0;
+static BOOL m_bLineOverflow = FALSE;
+static BOOL m_bLastWasCr = FALSE;
+
+#define MONITOR_RX_RING_BUFFER_SIZE 128U
+static UCHAR s_u8RxRingBuffer[MONITOR_RX_RING_BUFFER_SIZE];
+static volatile uint16_t s_u16RxRingHead = 0;
+static volatile uint16_t s_u16RxRingTail = 0;
+static volatile uint32_t s_u32RxOverflowCount = 0;
 
 #define MAX_FUNCTION_LIST	200
 static UINT uiMonitorListCount;
@@ -49,7 +57,16 @@ void DEMO_LPUART_IRQHandler(void)
     {
         data = LPUART_ReadByte(DEMO_LPUART);
 
-        UartReciveAndAck(data);
+        uint16_t nextHead = (uint16_t)((s_u16RxRingHead + 1U) % MONITOR_RX_RING_BUFFER_SIZE);
+        if (nextHead == s_u16RxRingTail)
+        {
+            s_u32RxOverflowCount++;
+        }
+        else
+        {
+            s_u8RxRingBuffer[s_u16RxRingHead] = data;
+            s_u16RxRingHead = nextHead;
+        }
 
     }
 
@@ -62,6 +79,14 @@ extern SMONITORCOMMAND sMonitorFuncList[];
 
 void MonitorInit(void)
 {
+	uiMonitorListCount = 0;
+	m_u8ReciveCount = 0;
+	m_bLineOverflow = FALSE;
+	m_bLastWasCr = FALSE;
+	m_szReciveBuf[0] = '\0';
+	s_u16RxRingHead = 0;
+	s_u16RxRingTail = 0;
+	s_u32RxOverflowCount = 0;
 	MonitorRegisterFunctions(sMonitorFuncList);
 }
 
@@ -81,13 +106,56 @@ BOOL MonitorRegisterFunctions(PSMONITORCOMMAND psList )
     return TRUE;
 }
 
-void UartSend(char* str,int nLen)
+void UartSend(const char* str,int nLen)
 {
 	int i=0;
 	for(i=0;i<nLen;i++)
 	{
 		PUTCHAR(str[i]);
 	}
+}
+
+static BOOL MonitorPopRxByte(UCHAR *pCh)
+{
+    if (pCh == NULL)
+    {
+        return FALSE;
+    }
+
+    if (s_u16RxRingTail == s_u16RxRingHead)
+    {
+        return FALSE;
+    }
+
+    *pCh = s_u8RxRingBuffer[s_u16RxRingTail];
+    s_u16RxRingTail = (uint16_t)((s_u16RxRingTail + 1U) % MONITOR_RX_RING_BUFFER_SIZE);
+
+    return TRUE;
+}
+
+static void MonitorResetLine(void)
+{
+    m_u8ReciveCount = 0;
+    m_bLineOverflow = FALSE;
+    m_szReciveBuf[0] = '\0';
+}
+
+void MonitorProcess(void)
+{
+    UCHAR ch = 0;
+
+    if (s_u32RxOverflowCount != 0U)
+    {
+        s_u32RxOverflowCount = 0;
+        s_u16RxRingTail = s_u16RxRingHead;
+        MonitorResetLine();
+        UartSend("\r\nUART RX overflow.\r\n", 21);
+    }
+
+    while (MonitorPopRxByte(&ch))
+    {
+        UartReciveAndAck(ch);
+    }
 }
 
 
@@ -110,13 +178,17 @@ MonitorParseAndExec(PCHAR szCommand,BOOL bRun)
 
 	BOOL bFound = FALSE;
 	BOOL bCommandExist = FALSE;
+	size_t argLen = 0;
 
 	// Comand name string
 	CHAR szName[64];
 	CHAR szCommandName[64];
 
 	// Gets the command name.
-	sscanf( szCommand, "%s", szName );
+	if (szCommand == NULL || sscanf( szCommand, " %63s", szName ) != 1)
+		{
+		return FALSE;
+		}
 	// Search for the command in all lists.
 	for ( i = 0; i < uiMonitorListCount && bFound == FALSE; i++ )
 		{
@@ -126,12 +198,14 @@ MonitorParseAndExec(PCHAR szCommand,BOOL bRun)
 					psCmd->szName != NULL;
 					psCmd++ )
 			{
-			sscanf( psCmd->szName, "%s", szCommandName );
+			if (sscanf( psCmd->szName, " %63s", szCommandName ) != 1)
+				{
+				continue;
+				}
 
 			// Search for command in list.
 			if ( strcmp( szName, szCommandName ) == 0 )
 				{
-				PCHAR szCommandEnd;
 				bRun=TRUE;
 				szCommand += strlen(szName);
 
@@ -141,22 +215,15 @@ MonitorParseAndExec(PCHAR szCommand,BOOL bRun)
 					szCommand++;
 					}
 
-				szCommandEnd = szCommand + strlen(szCommand) - 1;
-
 				// Remove trailing white-spaces
-				while( *szCommandEnd == ' ' || *szCommandEnd == '\t' )
+				argLen = strlen(szCommand);
+				while( argLen > 0U && (szCommand[argLen - 1U] == ' ' || szCommand[argLen - 1U] == '\t' ||
+						              szCommand[argLen - 1U] == '\r' || szCommand[argLen - 1U] == '\n') )
 					{
-					// Did we reach the beginning of the string?
-					if ( szCommandEnd <= szCommand )
-						{
-						break;
-						}
-
-					*szCommandEnd = '\0';
-					szCommandEnd--;
+					szCommand[--argLen] = '\0';
 					}
 
-				if(bRun)
+				if(bRun && psCmd->fnFunction != NULL)
 					{
 					// Run command.
 					psCmd->fnFunction( szCommand );
@@ -183,50 +250,65 @@ MonitorParseAndExec(PCHAR szCommand,BOOL bRun)
 void UartReciveAndAck(UCHAR ch)
 {
 	m_u8ReciveChar = ch;//GETCHAR();
-	if(m_u8ReciveChar == 0x0d)	// Press Enter
+	if(m_u8ReciveChar == '\n' && m_bLastWasCr)
+		{
+		m_bLastWasCr = FALSE;
+		return;
+		}
+	m_bLastWasCr = (m_u8ReciveChar == '\r') ? TRUE : FALSE;
+
+	if(m_u8ReciveChar == '\r' || m_u8ReciveChar == '\n')	// Press Enter
 		{
 
-		if(m_u8ReciveCount > 0)
-			{
-			m_szReciveBuf[m_u8ReciveCount++] = '\0';
-			m_szReciveBuf[m_u8ReciveCount++] = '\r';
-			m_szReciveBuf[m_u8ReciveCount++] = '\n';
-			}
 		m_u8SpecialSimpleBuf[0] = '\r';
 		m_u8SpecialSimpleBuf[1] = '\n';
 
 //		uart_putchar(TERM_PORT_NUM, m_u8SpecialSimpleBuf[0]);  //Send the received character to terminal
 //		uart_putchar(TERM_PORT_NUM, m_u8SpecialSimpleBuf[1]);  //Send the received character to terminal
-		UartSend((char*)m_u8SpecialSimpleBuf,2);
-		if(m_u8ReciveCount > 0)
+		UartSend((const char*)m_u8SpecialSimpleBuf,2);
+		if(m_bLineOverflow)
 			{
+			UartSend("Command too long.\r\n", 19);
+			}
+		else if(m_u8ReciveCount > 0)
+			{
+			m_szReciveBuf[m_u8ReciveCount] = '\0';
 			MonitorParseAndExec(m_szReciveBuf,FALSE);
 			}
 		
-		m_u8ReciveCount =0;
+		MonitorResetLine();
 		}
-	else if(m_u8ReciveChar == '\b')	// BackSpace
+	else if(m_u8ReciveChar == '\b' || m_u8ReciveChar == 0x7f)	// BackSpace
 		{
+		m_bLastWasCr = FALSE;
 		if(m_u8ReciveCount == 0)
 			{
 //			UART_RECIVE(&m_u8ReciveChar,1);
 			return;
 			}
-		if(m_u8ReciveCount == 0)
-			m_szReciveBuf[m_u8ReciveCount] = '\0';
-		else
-			m_szReciveBuf[m_u8ReciveCount--] = '\0';		
+		m_u8ReciveCount--;
+		m_szReciveBuf[m_u8ReciveCount] = '\0';
 		m_u8SpecialSimpleBuf[0] = '\b';
 		m_u8SpecialSimpleBuf[1] = ' ';
 		m_u8SpecialSimpleBuf[2] = '\b';
 		
-		UartSend((char*)m_u8SpecialSimpleBuf,3);
+		UartSend((const char*)m_u8SpecialSimpleBuf,3);
 		}
 	else		// Recive Char
 		{
+		m_bLastWasCr = FALSE;
+		if(m_bLineOverflow)
+			{
+			return;
+			}
+		if(m_u8ReciveCount >= (MONITOR_LINE_MAX_LENGTH - 1U))
+			{
+			m_bLineOverflow = TRUE;
+			return;
+			}
 		m_szReciveBuf[m_u8ReciveCount++] = (CHAR)m_u8ReciveChar;
 		m_szReciveBuf[m_u8ReciveCount] = '\0';
-		UartSend((char*)&m_szReciveBuf[m_u8ReciveCount-1],1);
+		UartSend((const char*)&m_szReciveBuf[m_u8ReciveCount-1U],1);
 		}
 }
 

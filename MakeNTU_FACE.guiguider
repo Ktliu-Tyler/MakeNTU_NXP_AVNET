@@ -11864,12 +11864,12 @@
 					"visible": true,
 					"isLock": false,
 					"flag": [],
-					"width": 291,
+					"width": 303,
 					"height": 40,
 					"default_style": false,
 					"range_s": 0,
 					"range_e": 100,
-					"starting_value": 50,
+					"starting_value": 0,
 					"left_value": 0,
 					"slider_mode": "LV_SLIDER_MODE_NORMAL",
 					"attribute_type": "freemaster",
@@ -23725,7 +23725,7 @@
 							68
 						],
 						"size": [
-							291,
+							303,
 							40
 						],
 						"default_style": false,
@@ -23734,7 +23734,7 @@
 						"range_s": 0,
 						"range_e": 100,
 						"slider_mode": "LV_SLIDER_MODE_NORMAL",
-						"starting_value": 50,
+						"starting_value": 0,
 						"left_value": 0,
 						"style": [
 							{

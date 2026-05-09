@@ -32,9 +32,9 @@ void setup_scr_Panel(lv_ui *ui)
     ui->Panel_Fan_slide = lv_slider_create(ui->Panel);
     lv_slider_set_range(ui->Panel_Fan_slide, 0, 100);
     lv_slider_set_mode(ui->Panel_Fan_slide, LV_SLIDER_MODE_NORMAL);
-    lv_slider_set_value(ui->Panel_Fan_slide, 50, LV_ANIM_OFF);
+    lv_slider_set_value(ui->Panel_Fan_slide, 0, LV_ANIM_OFF);
     lv_obj_set_pos(ui->Panel_Fan_slide, 103, 68);
-    lv_obj_set_size(ui->Panel_Fan_slide, 291, 40);
+    lv_obj_set_size(ui->Panel_Fan_slide, 303, 40);
 
     //Write style for Panel_Fan_slide, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_bg_opa(ui->Panel_Fan_slide, 60, LV_PART_MAIN|LV_STATE_DEFAULT);

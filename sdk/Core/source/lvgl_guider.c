@@ -33,6 +33,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*******************************************************************************
  * Definitions
@@ -72,6 +73,22 @@ struct robotStatus robot = {
     .emotionstatus = 0
 };
 
+typedef struct weather_status {
+    bool current_valid;
+    bool daily_valid;
+    bool rain_valid;
+    bool code_valid;
+    int current_temp;
+    int daily_low;
+    int daily_high;
+    int rain_percent;
+    int weather_code;
+} weather_status_t;
+
+static weather_status_t s_weather_status = {0};
+static bool s_weather_dirty = true;
+static lv_obj_t *s_weather_applied_screen = NULL;
+
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
@@ -91,6 +108,257 @@ static uint32_t get_idle_time_cb(void)
 static void reset_idle_time_cb(void)
 {
     resetIdleTaskTime();
+}
+
+static bool IsValidLvObj(lv_obj_t *obj)
+{
+    return obj != NULL && lv_obj_is_valid(obj);
+}
+
+static int ClampInt(int value, int min_value, int max_value)
+{
+    if (value < min_value) {
+        return min_value;
+    }
+    if (value > max_value) {
+        return max_value;
+    }
+    return value;
+}
+
+static char *AppendText(char *p, char *end, const char *text)
+{
+    while (p < end && text != NULL && *text != '\0') {
+        *p++ = *text++;
+    }
+    return p;
+}
+
+static char *AppendSignedInt(char *p, char *end, int value)
+{
+    char digits[12];
+    int count = 0;
+    unsigned int magnitude;
+
+    if (p >= end) {
+        return p;
+    }
+
+    if (value < 0) {
+        *p++ = '-';
+        magnitude = (unsigned int)(-(value + 1)) + 1U;
+    } else {
+        magnitude = (unsigned int)value;
+    }
+
+    do {
+        digits[count++] = (char)('0' + (magnitude % 10U));
+        magnitude /= 10U;
+    } while (magnitude != 0U && count < (int)sizeof(digits));
+
+    while (count > 0 && p < end) {
+        *p++ = digits[--count];
+    }
+
+    return p;
+}
+
+static void SetLabelTempCurrent(lv_obj_t *label, int temp)
+{
+    char text[24];
+    char *p = text;
+    char *end = text + sizeof(text) - 1U;
+
+    p = AppendText(p, end, "Temp: ");
+    p = AppendSignedInt(p, end, temp);
+    p = AppendText(p, end, " C");
+    *p = '\0';
+    lv_label_set_text(label, text);
+}
+
+static void SetLabelTempMaxMin(lv_obj_t *label, int low, int high)
+{
+    char text[40];
+    char *p = text;
+    char *end = text + sizeof(text) - 1U;
+
+    p = AppendText(p, end, "Max: ");
+    p = AppendSignedInt(p, end, high);
+    p = AppendText(p, end, " C Min: ");
+    p = AppendSignedInt(p, end, low);
+    p = AppendText(p, end, " C");
+    *p = '\0';
+    lv_label_set_text(label, text);
+}
+
+static void SetLabelRainPercent(lv_obj_t *label, int rain_percent)
+{
+    char text[32];
+    char *p = text;
+    char *end = text + sizeof(text) - 1U;
+
+    p = AppendText(p, end, "Rain Percent: ");
+    p = AppendSignedInt(p, end, rain_percent);
+    p = AppendText(p, end, " %");
+    *p = '\0';
+    lv_label_set_text(label, text);
+}
+
+static void HideWeatherImages(void)
+{
+    if (IsValidLvObj(guider_ui.Weather_img_0)) {
+        lv_obj_add_flag(guider_ui.Weather_img_0, LV_OBJ_FLAG_HIDDEN);
+    }
+    if (IsValidLvObj(guider_ui.Weather_img_1)) {
+        lv_obj_add_flag(guider_ui.Weather_img_1, LV_OBJ_FLAG_HIDDEN);
+    }
+    if (IsValidLvObj(guider_ui.Weather_img_3)) {
+        lv_obj_add_flag(guider_ui.Weather_img_3, LV_OBJ_FLAG_HIDDEN);
+    }
+    if (IsValidLvObj(guider_ui.Weather_img_45)) {
+        lv_obj_add_flag(guider_ui.Weather_img_45, LV_OBJ_FLAG_HIDDEN);
+    }
+    if (IsValidLvObj(guider_ui.Weather_img_55)) {
+        lv_obj_add_flag(guider_ui.Weather_img_55, LV_OBJ_FLAG_HIDDEN);
+    }
+    if (IsValidLvObj(guider_ui.Weather_img_95)) {
+        lv_obj_add_flag(guider_ui.Weather_img_95, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+
+static lv_obj_t *SelectWeatherImageObj(int weather_code, const void **image_src)
+{
+    *image_src = &_1_alpha_163x130;
+
+    switch (weather_code) {
+    case 0:
+        *image_src = &_0_alpha_136x124;
+        return guider_ui.Weather_img_0;
+    case 1:
+        *image_src = &_1_alpha_163x130;
+        return guider_ui.Weather_img_1;
+    case 2:
+        *image_src = &_1_alpha_163x130;
+        return guider_ui.Weather_img_1;
+    case 3:
+        *image_src = &_3_alpha_180x125;
+        return guider_ui.Weather_img_3;
+    case 45:
+    case 48:
+        *image_src = &_45_alpha_180x125;
+        return guider_ui.Weather_img_45;
+    case 51:
+    case 53:
+    case 55:
+    case 56:
+    case 57:
+        *image_src = &_55_alpha_171x132;
+        return guider_ui.Weather_img_55;
+    case 61:
+    case 63:
+    case 65:
+    case 66:
+    case 67:
+    case 71:
+    case 73:
+    case 75:
+    case 77:
+    case 80:
+    case 81:
+    case 82:
+    case 85:
+    case 86:
+        *image_src = &_55_alpha_171x132;
+        return guider_ui.Weather_img_55;
+    case 95:
+    case 96:
+    case 99:
+        *image_src = &_95_alpha_171x143;
+        return guider_ui.Weather_img_95;
+    default:
+        *image_src = &_1_alpha_163x130;
+        return guider_ui.Weather_img_1;
+    }
+}
+
+static void ApplyWeatherImage(int weather_code)
+{
+    const void *image_src = NULL;
+    lv_obj_t *image_obj = NULL;
+
+    HideWeatherImages();
+    image_obj = SelectWeatherImageObj(weather_code, &image_src);
+
+    if (IsValidLvObj(image_obj)) {
+        lv_img_set_src(image_obj, image_src);
+        lv_obj_clear_flag(image_obj, LV_OBJ_FLAG_HIDDEN);
+    }
+}
+
+static void WeatherApplyStateToUi(void)
+{
+    int temp_bar_value = 0;
+    int rain_value = 0;
+
+    if (!IsValidLvObj(guider_ui.Weather)) {
+        s_weather_applied_screen = NULL;
+        return;
+    }
+
+    if (!s_weather_dirty && s_weather_applied_screen == guider_ui.Weather) {
+        return;
+    }
+
+    if (IsValidLvObj(guider_ui.Weather_TempCurrentLabel)) {
+        if (s_weather_status.current_valid) {
+            SetLabelTempCurrent(guider_ui.Weather_TempCurrentLabel, s_weather_status.current_temp);
+        } else {
+            lv_label_set_text(guider_ui.Weather_TempCurrentLabel, "Temp: -- C");
+        }
+    }
+
+    if (IsValidLvObj(guider_ui.Weather_TempMaxMinLabel)) {
+        if (s_weather_status.daily_valid) {
+            SetLabelTempMaxMin(guider_ui.Weather_TempMaxMinLabel,
+                               s_weather_status.daily_low,
+                               s_weather_status.daily_high);
+        } else {
+            lv_label_set_text(guider_ui.Weather_TempMaxMinLabel, "Max: -- C Min: -- C");
+        }
+    }
+
+    if (IsValidLvObj(guider_ui.Weather_RainPercentLabel)) {
+        if (s_weather_status.rain_valid) {
+            SetLabelRainPercent(guider_ui.Weather_RainPercentLabel, s_weather_status.rain_percent);
+        } else {
+            lv_label_set_text(guider_ui.Weather_RainPercentLabel, "Rain Percent: -- %");
+        }
+    }
+
+    if (IsValidLvObj(guider_ui.Weather_TempBar)) {
+        lv_bar_set_range(guider_ui.Weather_TempBar, 0, 70);
+        if (s_weather_status.current_valid) {
+            temp_bar_value = s_weather_status.current_temp;
+        } else if (s_weather_status.daily_valid) {
+            temp_bar_value = s_weather_status.daily_high;
+        }
+        lv_bar_set_value(guider_ui.Weather_TempBar, ClampInt(temp_bar_value, 0, 70), LV_ANIM_ON);
+    }
+
+    if (IsValidLvObj(guider_ui.Weather_RainBar)) {
+        lv_bar_set_range(guider_ui.Weather_RainBar, 0, 100);
+        if (s_weather_status.rain_valid) {
+            rain_value = s_weather_status.rain_percent;
+        }
+        lv_bar_set_value(guider_ui.Weather_RainBar, ClampInt(rain_value, 0, 100), LV_ANIM_ON);
+    }
+
+    if (s_weather_status.code_valid) {
+        ApplyWeatherImage(s_weather_status.weather_code);
+    }
+
+    s_weather_applied_screen = guider_ui.Weather;
+    s_weather_dirty = false;
 }
 
 static void AppTask(void *param)
@@ -114,6 +382,10 @@ static void AppTask(void *param)
 
     for (;;)
     {
+#if !LV_USE_GUIDER_SIMULATOR
+        MonitorProcess();
+#endif
+        WeatherApplyStateToUi();
         lv_task_handler();
         vTaskDelay(5);
     }
@@ -445,6 +717,129 @@ void FocusGui(char* pValue)
     robot.speakstatus = 3;
 }
 
+static const char *SkipSpaces(const char *p)
+{
+    while (p != NULL && (*p == ' ' || *p == '\t')) {
+        p++;
+    }
+    return p;
+}
+
+static bool ParseWeatherIntField(const char **cursor, int *out_value, bool require_comma)
+{
+    char *end = NULL;
+    long value = 0;
+    const char *p = SkipSpaces(*cursor);
+
+    if (p == NULL || out_value == NULL || *p == '\0') {
+        return false;
+    }
+
+    value = strtol(p, &end, 10);
+    if (end == p) {
+        return false;
+    }
+
+    p = SkipSpaces(end);
+    if (require_comma) {
+        if (*p != ',') {
+            return false;
+        }
+        p++;
+    }
+
+    *out_value = (int)value;
+    *cursor = p;
+    return true;
+}
+
+static bool ParseWeatherCommand(const char *pValue,
+                                char *kind,
+                                size_t kind_size,
+                                int *value_1,
+                                int *value_2,
+                                int *rain_percent,
+                                int *weather_code)
+{
+    const char *p = SkipSpaces(pValue);
+    size_t kind_len = 0;
+
+    if (p == NULL || kind == NULL || kind_size == 0U ||
+        value_1 == NULL || value_2 == NULL || rain_percent == NULL || weather_code == NULL) {
+        return false;
+    }
+
+    while (*p != '\0' && *p != ',' && *p != ' ' && *p != '\t') {
+        if (kind_len + 1U < kind_size) {
+            kind[kind_len++] = *p;
+        }
+        p++;
+    }
+    kind[kind_len] = '\0';
+
+    p = SkipSpaces(p);
+    if (kind_len == 0U || *p != ',') {
+        return false;
+    }
+    p++;
+
+    if (!ParseWeatherIntField(&p, value_1, true)) {
+        return false;
+    }
+    if (!ParseWeatherIntField(&p, value_2, true)) {
+        return false;
+    }
+    if (!ParseWeatherIntField(&p, rain_percent, true)) {
+        return false;
+    }
+    if (!ParseWeatherIntField(&p, weather_code, false)) {
+        return false;
+    }
+
+    return true;
+}
+
+void WeatherControl(char* pValue)
+{
+    char kind[10];
+    int value_1 = 0;
+    int value_2 = 0;
+    int rain_percent = 0;
+    int weather_code = 0;
+
+    PRINTF("Weather raw pValue = [%s]\r\n", pValue ? pValue : "(null)");
+
+    if (!ParseWeatherCommand(pValue, kind, sizeof(kind), &value_1, &value_2, &rain_percent, &weather_code)) {
+        PRINTF("Weather parse failed, use: Weather daily,<low>,<high>,<rain>,<code>\r\n");
+        PRINTF("                       or: Weather current,<temp>,<temp>,<rain>,<code>\r\n");
+        return;
+    }
+
+    rain_percent = ClampInt(rain_percent, 0, 100);
+
+    if (strcmp(kind, "daily") == 0) {
+        s_weather_status.daily_low = value_1;
+        s_weather_status.daily_high = value_2;
+        s_weather_status.daily_valid = true;
+    } else if (strcmp(kind, "current") == 0) {
+        s_weather_status.current_temp = value_1;
+        s_weather_status.current_valid = true;
+    } else {
+        PRINTF("Weather kind unknown: %s\r\n", kind);
+        return;
+    }
+
+    s_weather_status.rain_percent = rain_percent;
+    s_weather_status.weather_code = weather_code;
+    s_weather_status.rain_valid = true;
+    s_weather_status.code_valid = true;
+    s_weather_dirty = true;
+
+    PRINTF("Weather %s value1=%d value2=%d rain=%d code=%d\r\n",
+           kind, value_1, value_2, rain_percent, weather_code);
+    WeatherApplyStateToUi();
+}
+
 static bool ParseMotorAngle(const char *pValue, int *out_angle)
 {
     int angle = 0;
@@ -582,6 +977,7 @@ SMONITORCOMMAND sMonitorFuncList[]=
     {  "Music",    "<var 1> <var 2>",     "switch to MUSIC",      MusicGui },
     {  "Focus",    "<var 1> <var 2>",     "switch to FOCUS",      FocusGui },
 	{  "ShowNum",    "<var 1> <var 2>",     "Print the input numbers",     ShowNumber },
+    {  "Weather",    "<kind>,<temp>,<temp>,<rain>,<code>",     "update weather data",     WeatherControl },
 	{  "MotorPitch",    "<var 1> <var 2>",     "control motor P",      MotorControlPitch},
 	{  "MotorYaw",    "<var 1> <var 2>",     "control motor Y",      MotorControlYaw},
 	{  "MotorYawPitch",    "<yaw> <pitch>",     "control motor Y and P",      MotorControlYawPitch},

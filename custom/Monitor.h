@@ -27,7 +27,9 @@ typedef struct tasgSMONITORCOMMAND
 
 
 void MonitorInit(void);
+void MonitorProcess(void);
 void UartReciveAndAck(UCHAR ch);
+void UartSend(const char* str,int nLen);
 BOOL MonitorRegisterFunctions(PSMONITORCOMMAND psList);
 
 #endif
