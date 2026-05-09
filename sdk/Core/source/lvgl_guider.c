@@ -92,6 +92,8 @@ typedef struct weather_status {
 static weather_status_t s_weather_status = {0};
 static bool s_weather_dirty = true;
 static lv_obj_t *s_weather_applied_screen = NULL;
+static bool s_room_temp_valid = false;
+static int s_room_temp_c_x10 = 0;
 
 static bool s_sleep_time_sync_valid = false;
 static bool s_sleep_time_dirty = false;
@@ -174,6 +176,30 @@ static char *AppendSignedInt(char *p, char *end, int value)
     return p;
 }
 
+static char *AppendSignedTenth(char *p, char *end, int value_x10)
+{
+    unsigned int magnitude = 0;
+
+    if (value_x10 < 0) {
+        if (p < end) {
+            *p++ = '-';
+        }
+        magnitude = (unsigned int)(-(value_x10 + 1)) + 1U;
+    } else {
+        magnitude = (unsigned int)value_x10;
+    }
+
+    p = AppendSignedInt(p, end, (int)(magnitude / 10U));
+    if (p < end) {
+        *p++ = '.';
+    }
+    if (p < end) {
+        *p++ = (char)('0' + (magnitude % 10U));
+    }
+
+    return p;
+}
+
 static void SetLabelTempCurrent(lv_obj_t *label, int temp)
 {
     char text[24];
@@ -211,6 +237,19 @@ static void SetLabelRainPercent(lv_obj_t *label, int rain_percent)
     p = AppendText(p, end, "Rain Percent: ");
     p = AppendSignedInt(p, end, rain_percent);
     p = AppendText(p, end, " %");
+    *p = '\0';
+    lv_label_set_text(label, text);
+}
+
+static void SetLabelRoomTemp(lv_obj_t *label, int temp_c_x10)
+{
+    char text[32];
+    char *p = text;
+    char *end = text + sizeof(text) - 1U;
+
+    p = AppendText(p, end, "Room Temp: ");
+    p = AppendSignedTenth(p, end, temp_c_x10);
+    p = AppendText(p, end, " C");
     *p = '\0';
     lv_label_set_text(label, text);
 }
@@ -343,6 +382,16 @@ static void WeatherApplyStateToUi(void)
             SetLabelRainPercent(guider_ui.Weather_RainPercentLabel, s_weather_status.rain_percent);
         } else {
             lv_label_set_text(guider_ui.Weather_RainPercentLabel, "Rain Percent: -- %");
+        }
+    }
+
+    if (IsValidLvObj(guider_ui.Weather_RoomTH_Label)) {
+        lv_label_set_long_mode(guider_ui.Weather_RoomTH_Label, LV_LABEL_LONG_CLIP);
+        lv_obj_set_height(guider_ui.Weather_RoomTH_Label, 40);
+        if (s_room_temp_valid) {
+            SetLabelRoomTemp(guider_ui.Weather_RoomTH_Label, s_room_temp_c_x10);
+        } else {
+            lv_label_set_text(guider_ui.Weather_RoomTH_Label, "Room Temp: -- C");
         }
     }
 
@@ -938,6 +987,49 @@ void WeatherControl(char* pValue)
     WeatherApplyStateToUi();
 }
 
+static bool ParseSingleIntArg(const char *pValue, int *out_value)
+{
+    const char *p = SkipSpaces(pValue);
+    char *end = NULL;
+    long value = 0;
+
+    if (p == NULL || out_value == NULL || *p == '\0') {
+        return false;
+    }
+
+    value = strtol(p, &end, 10);
+    if (end == p) {
+        return false;
+    }
+
+    p = SkipSpaces(end);
+    if (*p != '\0') {
+        return false;
+    }
+
+    *out_value = (int)value;
+    return true;
+}
+
+void TempRoomControl(char* pValue)
+{
+    int temp_c_x10 = 0;
+
+    PRINTF("TempRoom raw pValue = [%s]\r\n", pValue ? pValue : "(null)");
+
+    if (!ParseSingleIntArg(pValue, &temp_c_x10)) {
+        PRINTF("TempRoom parse failed, use: TempRoom <celsius_x10>\r\n");
+        return;
+    }
+
+    s_room_temp_c_x10 = temp_c_x10;
+    s_room_temp_valid = true;
+    s_weather_dirty = true;
+
+    WeatherApplyStateToUi();
+    PRINTF("Room temp = %d x0.1 C\r\n", temp_c_x10);
+}
+
 static bool ParseFixedDigits(const char **cursor, int digit_count, int *out_value)
 {
     const char *p = SkipSpaces(*cursor);
@@ -1169,9 +1261,10 @@ SMONITORCOMMAND sMonitorFuncList[]=
     {  "Speaking",    "<var 1> <var 2>",     "switch to SPEAKING",      SpeakingGui },
     {  "Music",    "<var 1> <var 2>",     "switch to MUSIC",      MusicGui },
     {  "Focus",    "<var 1> <var 2>",     "switch to FOCUS",      FocusGui },
-	{  "ShowNum",    "<var 1> <var 2>",     "Print the input numbers",     ShowNumber },
+    {  "ShowNum",    "<var 1> <var 2>",     "Print the input numbers",     ShowNumber },
     {  "Weather",    "<kind>,<temp>,<temp>,<rain>,<code>",     "update weather data",     WeatherControl },
     {  "Time",    "<yyyymmdd>,<hhmmss>,<weekday>,<offset>",     "sync sleep clock",     TimeControl },
+    {  "TempRoom",    "<celsius_x10>",     "update room temperature",     TempRoomControl },
 	{  "MotorPitch",    "<var 1> <var 2>",     "control motor P",      MotorControlPitch},
 	{  "MotorYaw",    "<var 1> <var 2>",     "control motor Y",      MotorControlYaw},
 	{  "MotorYawPitch",    "<yaw> <pitch>",     "control motor Y and P",      MotorControlYawPitch},

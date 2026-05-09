@@ -261,16 +261,16 @@ void setup_scr_Weather(lv_ui *ui)
 
     //Write codes Weather_RoomTH_Label
     ui->Weather_RoomTH_Label = lv_label_create(ui->Weather);
-    lv_label_set_text(ui->Weather_RoomTH_Label, "Room Temp: -- C    Room Humidity: -- %");
+    lv_label_set_text(ui->Weather_RoomTH_Label, "Room Temp: -- C");
     lv_label_set_long_mode(ui->Weather_RoomTH_Label, LV_LABEL_LONG_WRAP);
-    lv_obj_set_pos(ui->Weather_RoomTH_Label, 11, 272);
+    lv_obj_set_pos(ui->Weather_RoomTH_Label, 23, 261);
     lv_obj_set_size(ui->Weather_RoomTH_Label, 460, 29);
 
     //Write style for Weather_RoomTH_Label, Part: LV_PART_MAIN, State: LV_STATE_DEFAULT.
     lv_obj_set_style_border_width(ui->Weather_RoomTH_Label, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_radius(ui->Weather_RoomTH_Label, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui->Weather_RoomTH_Label, lv_color_hex(0xffffff), LV_PART_MAIN|LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(ui->Weather_RoomTH_Label, &lv_font_Acme_Regular_16, LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(ui->Weather_RoomTH_Label, lv_color_hex(0xfbe69d), LV_PART_MAIN|LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui->Weather_RoomTH_Label, &lv_font_Acme_Regular_30, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui->Weather_RoomTH_Label, 255, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(ui->Weather_RoomTH_Label, 2, LV_PART_MAIN|LV_STATE_DEFAULT);
     lv_obj_set_style_text_line_space(ui->Weather_RoomTH_Label, 0, LV_PART_MAIN|LV_STATE_DEFAULT);
