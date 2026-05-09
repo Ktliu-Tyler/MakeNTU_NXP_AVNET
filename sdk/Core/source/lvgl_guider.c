@@ -55,6 +55,10 @@ lv_ui guider_ui;
 extern int Focus_digital_clock_Focus_hour_value;
 extern int Focus_digital_clock_Focus_min_value;
 extern int Focus_digital_clock_Focus_sec_value;
+extern int Sleep_digital_clock_Sleep_hour_value;
+extern int Sleep_digital_clock_Sleep_min_value;
+extern int Sleep_digital_clock_Sleep_sec_value;
+extern char Sleep_digital_clock_Sleep_meridiem[];
 
 /*KT add*/
 struct robotStatus {
@@ -88,6 +92,13 @@ typedef struct weather_status {
 static weather_status_t s_weather_status = {0};
 static bool s_weather_dirty = true;
 static lv_obj_t *s_weather_applied_screen = NULL;
+
+static bool s_sleep_time_sync_valid = false;
+static bool s_sleep_time_dirty = false;
+static uint32_t s_sleep_time_base_tick = 0;
+static int s_sleep_time_base_second = 0;
+static int s_sleep_time_last_applied_second = -1;
+static lv_obj_t *s_sleep_time_applied_label = NULL;
 
 /*******************************************************************************
  * Prototypes
@@ -361,6 +372,92 @@ static void WeatherApplyStateToUi(void)
     s_weather_dirty = false;
 }
 
+static void ConvertDaySecondToSleepClock(int day_second,
+                                         int *hour12,
+                                         int *minute,
+                                         int *second,
+                                         char *meridiem)
+{
+    int hour24 = day_second / 3600;
+
+    *minute = (day_second / 60) % 60;
+    *second = day_second % 60;
+
+    if (hour24 >= 12) {
+        meridiem[0] = 'P';
+        meridiem[1] = 'M';
+    } else {
+        meridiem[0] = 'A';
+        meridiem[1] = 'M';
+    }
+    meridiem[2] = '\0';
+
+    *hour12 = hour24 % 12;
+    if (*hour12 == 0) {
+        *hour12 = 12;
+    }
+}
+
+static bool SleepClockValuesMatch(int day_second)
+{
+    int hour12 = 0;
+    int minute = 0;
+    int second = 0;
+    char meridiem[3];
+
+    ConvertDaySecondToSleepClock(day_second, &hour12, &minute, &second, meridiem);
+
+    return Sleep_digital_clock_Sleep_hour_value == hour12 &&
+           Sleep_digital_clock_Sleep_min_value == minute &&
+           Sleep_digital_clock_Sleep_sec_value == second &&
+           Sleep_digital_clock_Sleep_meridiem[0] == meridiem[0] &&
+           Sleep_digital_clock_Sleep_meridiem[1] == meridiem[1];
+}
+
+static void SetSleepClockFromDaySecond(int day_second)
+{
+    ConvertDaySecondToSleepClock(day_second,
+                                 &Sleep_digital_clock_Sleep_hour_value,
+                                 &Sleep_digital_clock_Sleep_min_value,
+                                 &Sleep_digital_clock_Sleep_sec_value,
+                                 Sleep_digital_clock_Sleep_meridiem);
+
+    if (IsValidLvObj(guider_ui.Sleep_digital_clock_Sleep)) {
+        lv_dclock_set_text_fmt(guider_ui.Sleep_digital_clock_Sleep, "%d:%02d:%02d %s",
+                               Sleep_digital_clock_Sleep_hour_value,
+                               Sleep_digital_clock_Sleep_min_value,
+                               Sleep_digital_clock_Sleep_sec_value,
+                               Sleep_digital_clock_Sleep_meridiem);
+        s_sleep_time_applied_label = guider_ui.Sleep_digital_clock_Sleep;
+    } else {
+        s_sleep_time_applied_label = NULL;
+    }
+}
+
+static void SleepClockApplyTimeSync(void)
+{
+    uint32_t elapsed_seconds = 0;
+    int day_second = 0;
+
+    if (!s_sleep_time_sync_valid) {
+        return;
+    }
+
+    elapsed_seconds = (uint32_t)((lv_tick_get() - s_sleep_time_base_tick) / 1000U);
+    day_second = (int)((s_sleep_time_base_second + (int)(elapsed_seconds % 86400U)) % 86400);
+
+    if (!s_sleep_time_dirty &&
+        s_sleep_time_last_applied_second == day_second &&
+        s_sleep_time_applied_label == guider_ui.Sleep_digital_clock_Sleep &&
+        SleepClockValuesMatch(day_second)) {
+        return;
+    }
+
+    SetSleepClockFromDaySecond(day_second);
+    s_sleep_time_last_applied_second = day_second;
+    s_sleep_time_dirty = false;
+}
+
 static void AppTask(void *param)
 {
 #if LV_USE_LOG
@@ -386,6 +483,7 @@ static void AppTask(void *param)
         MonitorProcess();
 #endif
         WeatherApplyStateToUi();
+        SleepClockApplyTimeSync();
         lv_task_handler();
         vTaskDelay(5);
     }
@@ -840,6 +938,101 @@ void WeatherControl(char* pValue)
     WeatherApplyStateToUi();
 }
 
+static bool ParseFixedDigits(const char **cursor, int digit_count, int *out_value)
+{
+    const char *p = SkipSpaces(*cursor);
+    int value = 0;
+    int i = 0;
+
+    if (p == NULL || out_value == NULL) {
+        return false;
+    }
+
+    for (i = 0; i < digit_count; i++) {
+        if (!isdigit((unsigned char)p[i])) {
+            return false;
+        }
+        value = (value * 10) + (p[i] - '0');
+    }
+
+    *out_value = value;
+    *cursor = p + digit_count;
+    return true;
+}
+
+static bool ParseComma(const char **cursor)
+{
+    const char *p = SkipSpaces(*cursor);
+
+    if (p == NULL || *p != ',') {
+        return false;
+    }
+
+    *cursor = p + 1;
+    return true;
+}
+
+static bool ParseTimeCommand(const char *pValue, int *out_hour, int *out_minute, int *out_second)
+{
+    const char *p = SkipSpaces(pValue);
+    int date_value = 0;
+    int time_value = 0;
+    int hour = 0;
+    int minute = 0;
+    int second = 0;
+
+    if (p == NULL || out_hour == NULL || out_minute == NULL || out_second == NULL) {
+        return false;
+    }
+
+    if (!ParseFixedDigits(&p, 8, &date_value)) {
+        return false;
+    }
+    if (!ParseComma(&p)) {
+        return false;
+    }
+    if (!ParseFixedDigits(&p, 6, &time_value)) {
+        return false;
+    }
+
+    hour = time_value / 10000;
+    minute = (time_value / 100) % 100;
+    second = time_value % 100;
+
+    if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
+        return false;
+    }
+
+    *out_hour = hour;
+    *out_minute = minute;
+    *out_second = second;
+    (void)date_value;
+    return true;
+}
+
+void TimeControl(char* pValue)
+{
+    int hour = 0;
+    int minute = 0;
+    int second = 0;
+
+    PRINTF("Time raw pValue = [%s]\r\n", pValue ? pValue : "(null)");
+
+    if (!ParseTimeCommand(pValue, &hour, &minute, &second)) {
+        PRINTF("Time parse failed, use: Time YYYYMMDD,HHMMSS,weekday,+offset\r\n");
+        return;
+    }
+
+    s_sleep_time_base_second = (hour * 3600) + (minute * 60) + second;
+    s_sleep_time_base_tick = lv_tick_get();
+    s_sleep_time_sync_valid = true;
+    s_sleep_time_dirty = true;
+    s_sleep_time_last_applied_second = -1;
+
+    SleepClockApplyTimeSync();
+    PRINTF("Sleep clock synced to %02d:%02d:%02d\r\n", hour, minute, second);
+}
+
 static bool ParseMotorAngle(const char *pValue, int *out_angle)
 {
     int angle = 0;
@@ -978,6 +1171,7 @@ SMONITORCOMMAND sMonitorFuncList[]=
     {  "Focus",    "<var 1> <var 2>",     "switch to FOCUS",      FocusGui },
 	{  "ShowNum",    "<var 1> <var 2>",     "Print the input numbers",     ShowNumber },
     {  "Weather",    "<kind>,<temp>,<temp>,<rain>,<code>",     "update weather data",     WeatherControl },
+    {  "Time",    "<yyyymmdd>,<hhmmss>,<weekday>,<offset>",     "sync sleep clock",     TimeControl },
 	{  "MotorPitch",    "<var 1> <var 2>",     "control motor P",      MotorControlPitch},
 	{  "MotorYaw",    "<var 1> <var 2>",     "control motor Y",      MotorControlYaw},
 	{  "MotorYawPitch",    "<yaw> <pitch>",     "control motor Y and P",      MotorControlYawPitch},
